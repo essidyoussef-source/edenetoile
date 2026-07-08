@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "L'Étoile Filante & L'EDEN · Promenades en mer au Tréport — site + cockpit",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
