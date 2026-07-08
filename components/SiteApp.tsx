@@ -121,30 +121,8 @@ export default function SiteApp() {
     chart = tideChart(data, now, now);
   }
 
-  let meteoTiles: { k: string; v: string; sub: string }[] = [];
-  let meteoDemain = '';
-  let hasMeteo = false;
-  if (data && data.weather) {
-    const w = EF.weatherAt(data.weather, now);
-    const wave = EF.waveAt(data.marineWave, now);
-    if (w) {
-      hasMeteo = true;
-      meteoTiles = [
-        { k: 'Ciel', v: String(w.temp) + '°C', sub: w.label },
-        { k: 'Vent', v: w.wind + ' km/h', sub: 'secteur ' + w.dir },
-        { k: 'Rafales', v: w.gust + ' km/h', sub: w.gust >= 45 ? 'vigilance' : 'raisonnables' },
-        { k: 'Pluie', v: w.precip == null ? '—' : w.precip + ' %', sub: 'probabilité' },
-        { k: 'Mer', v: wave == null ? '—' : String(wave).replace('.', ',') + ' m', sub: 'hauteur de vague' },
-      ];
-      const d = data.weather.daily;
-      if (d && d.time.length > 1) {
-        const code = d.weather_code[1];
-        meteoDemain =
-          'Demain : ' + (EF.WMO[code] || '—').toLowerCase() + ', ' + Math.round(d.temperature_2m_min[1]) +
-          '° à ' + Math.round(d.temperature_2m_max[1]) + '°, vent max ' + Math.round(d.wind_speed_10m_max[1]) + ' km/h.';
-      }
-    }
-  }
+  // Disponibilité météo (utilisée par la carte « Météo du jour »)
+  const hasMeteo = !!(data && data.weather && EF.weatherAt(data.weather, now));
 
   const coefs = chart
     ? chart.extremesToday
@@ -348,16 +326,15 @@ export default function SiteApp() {
           <div>
             {/* HERO PLEINE BANNIÈRE */}
             <section style={S('position:relative;overflow:hidden')}>
-              <img src="/uploads/681249844_1893613521685070_5684458128423170416_n-fccaa4e7.jpg" alt="L'Étoile Filante au pied des falaises de Mers-les-Bains" style={S('width:100%;height:clamp(500px,62vw,700px);object-fit:cover;display:block')} />
+              <img src="/uploads/679452210_1893613361685086_61712237109849653_n-3.jpg" alt="L'Étoile Filante et ses passagers devant les falaises de craie" style={S('width:100%;height:clamp(500px,62vw,700px);object-fit:cover;display:block')} />
               <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0.18) 0%,rgba(11,34,57,0.10) 40%,rgba(11,34,57,0.72) 100%)')}></div>
               <div style={S('position:absolute;inset:0;display:flex;align-items:flex-end')}>
                 <div style={S('max-width:1240px;margin:0 auto;width:100%;padding:0 24px clamp(120px,14vw,170px)')}>
-                  <div style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Port du Tréport · Normandie</div>
-                  <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:16ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
-                    Les plus hautes falaises d&apos;Europe,{' '}
-                    <span style={S('background:rgba(189,232,245,0.92);color:#0B2239;padding:1px 14px;border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>vues de la mer.</span>
+                  <div style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Promenades en bateau · Le Tréport</div>
+                  <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:18ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
+                    <span style={S('background:rgba(189,232,245,0.92);color:#0B2239;padding:1px 14px;border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>Balades en mer</span> au pied des plus hautes falaises d&apos;Europe
                   </h1>
-                  <p style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Balades commentées de 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise.</p>
+                  <p style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Embarquez pour 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise. Une sortie commentée, au rythme de la marée.</p>
                   <div style={S('display:flex;gap:12px;flex-wrap:wrap')}>
                     <a href="#ardoise" className="hvPillLight" style={S('padding:14px 26px;border-radius:999px;background:#FFFFFF;color:#0B2239;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 10px 30px rgba(11,34,57,0.3)')}>Horaires du jour ↓</a>
                     <a href={`tel:${TEL_HREF}`} className="hvGlass" style={S('padding:14px 26px;border-radius:999px;background:rgba(255,255,255,0.16);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);color:#FFFFFF;font-weight:700;font-size:15px;text-decoration:none')}>Réserver · {TELEPHONE}</a>
@@ -475,7 +452,7 @@ export default function SiteApp() {
                             <div style={S('display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0')}><span style={S('color:#5C7893')}>Enfant</span><strong style={S("font-family:'Sora',sans-serif")}>10 €</strong></div>
                           </div>
                         </div>
-                        <div style={S('font-size:11.5px;color:#5C7893;line-height:1.5')}>Bébé (−3 ans) <strong style={S('color:#0F7A47')}>gratuit</strong> · Pêche <strong>60 €</strong>/pers</div>
+                        <div style={S('font-size:11.5px;color:#5C7893;line-height:1.5')}>Bébé (−3 ans) <strong style={S('color:#0F7A47')}>gratuit</strong> · billets à la billetterie du quai</div>
                         <a href="#" onClick={go('tarifs')} className="hvNavy" style={S('font-size:12.5px;font-weight:700;color:#1D82C4;margin-top:auto')}>Tous les tarifs →</a>
                       </div>
 
@@ -717,108 +694,86 @@ export default function SiteApp() {
             </section>
 
             {/* MARÉE & MÉTÉO */}
-            <section id="maree" style={S('max-width:1240px;margin:0 auto;padding:clamp(56px,8vw,100px) 24px 0')}>
-              <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:30px;align-items:start')}>
-                <div style={S('position:sticky;top:98px')}>
-                  <svg width="52" height="52" viewBox="0 0 48 48" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round" style={S('display:block;margin-bottom:18px')}>
-                    <circle cx="24" cy="24" r="15"></circle>
-                    <circle cx="24" cy="24" r="4.5"></circle>
-                    <line x1="24" y1="9" x2="24" y2="3"></line><circle cx="24" cy="2.5" r="1.6"></circle>
-                    <line x1="24" y1="39" x2="24" y2="45"></line><circle cx="24" cy="45.5" r="1.6"></circle>
-                    <line x1="9" y1="24" x2="3" y2="24"></line><circle cx="2.5" cy="24" r="1.6"></circle>
-                    <line x1="39" y1="24" x2="45" y2="24"></line><circle cx="45.5" cy="24" r="1.6"></circle>
-                    <line x1="13.4" y1="13.4" x2="9.2" y2="9.2"></line><circle cx="8.8" cy="8.8" r="1.6"></circle>
-                    <line x1="34.6" y1="34.6" x2="38.8" y2="38.8"></line><circle cx="39.2" cy="39.2" r="1.6"></circle>
-                    <line x1="13.4" y1="34.6" x2="9.2" y2="38.8"></line><circle cx="8.8" cy="39.2" r="1.6"></circle>
-                    <line x1="34.6" y1="13.4" x2="38.8" y2="9.2"></line><circle cx="39.2" cy="8.8" r="1.6"></circle>
-                    <line x1="24" y1="19.5" x2="24" y2="9"></line><line x1="24" y1="28.5" x2="24" y2="39"></line>
-                    <line x1="19.5" y1="24" x2="9" y2="24"></line><line x1="28.5" y1="24" x2="39" y2="24"></line>
-                  </svg>
-                  <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>En direct du quai</div>
-                  <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,44px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 16px")}>
-                    La marée <span style={S('text-decoration:underline;text-decoration-style:wavy;text-decoration-color:#4FB3E8;text-underline-offset:7px;text-decoration-thickness:2px')}>décide</span>, le capitaine confirme
-                  </h2>
-                  <p style={S('font-size:15.5px;line-height:1.7;color:#5C7893;margin:0 0 22px;max-width:46ch')}>Le port du Tréport s&apos;assèche à marée basse : les horaires sont calculés automatiquement sur la marée du jour, puis <span style={S('background:#BDE8F5;border-radius:6px;padding:0 6px;color:#0B2239;font-weight:600')}>confirmés chaque veille</span> par le capitaine selon la météo.</p>
-                  <div style={S('display:flex;flex-direction:column;gap:12px;margin-bottom:22px')}>
-                    <div style={S('display:flex;align-items:center;gap:14px;background:#FFFFFF;border:1px solid #DCEDF8;border-radius:18px;padding:13px 16px;box-shadow:0 6px 18px rgba(20,93,160,0.06)')}>
-                      <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD;flex:none')}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7 L12 12 L15.5 14"></path></svg>
-                      </span>
-                      <div style={S('font-size:13px;line-height:1.5;color:#5C7893')}>Sorties possibles de <strong style={S('color:#0B2239')}>2h40 avant</strong> à <strong style={S('color:#0B2239')}>3h00 après</strong> la pleine mer</div>
-                    </div>
-                    <div style={S('display:flex;align-items:center;gap:14px;background:#FFFFFF;border:1px solid #DCEDF8;border-radius:18px;padding:13px 16px;box-shadow:0 6px 18px rgba(20,93,160,0.06)')}>
-                      <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD;flex:none')}>
-                        <Boat size={20} stroke="#1D82C4" />
-                      </span>
-                      <div style={S('font-size:13px;line-height:1.5;color:#5C7893')}><strong style={S('color:#0B2239')}>Un départ toutes les 30 min</strong> · L&apos;Étoile Filante et L&apos;EDEN se relaient à quai</div>
-                    </div>
-                    <div style={S('display:flex;align-items:center;gap:14px;background:#FFFFFF;border:1px solid #DCEDF8;border-radius:18px;padding:13px 16px;box-shadow:0 6px 18px rgba(20,93,160,0.06)')}>
-                      <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD;flex:none')}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><path d="M2.5 12 C 5 9, 8 9, 10.5 12 C 13 15, 16 15, 18.5 12 C 20 10.3, 21.2 10, 21.8 10.2"></path><path d="M2.5 17.5 C 5 14.5, 8 14.5, 10.5 17.5 C 13 20.5, 16 20.5, 18.5 17.5"></path><path d="M14 4.5 C 16.5 4.5, 18.5 6, 19 8.5"></path></svg>
-                      </span>
-                      <div style={S('font-size:13px;line-height:1.5;color:#5C7893')}>Le <strong style={S('color:#0B2239')}>coefficient de marée</strong> et l&apos;état de la mer décident du programme du lendemain</div>
-                    </div>
-                  </div>
-                  <div style={S('font-size:12px;color:#8FA9BE;line-height:1.6')}>{sourceLabel}</div>
-                </div>
+            <section id="maree" style={S('position:relative;margin-top:clamp(40px,6vw,80px)')}>
+              <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={S('display:block;width:100%;height:clamp(46px,7vw,100px)')}>
+                <path d="M0,100 L0,55 C180,20 360,85 560,58 C760,30 940,80 1140,55 C1290,36 1380,58 1440,48 L1440,100 Z" fill="#0F3053"></path>
+                <path d="M0,100 L0,75 C220,50 460,96 700,74 C940,52 1180,92 1440,68 L1440,100 Z" fill="rgba(79,179,232,0.35)"></path>
+              </svg>
+              <div style={S('background:linear-gradient(160deg,#0F3053 0%,#0B2239 70%);color:#FFFFFF;position:relative;overflow:hidden;padding:clamp(14px,2vw,30px) 0 clamp(40px,5vw,72px)')}>
+                <div style={S('position:absolute;top:-140px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(79,179,232,0.20),rgba(79,179,232,0) 70%);pointer-events:none')}></div>
+                <div style={S('position:absolute;bottom:60px;left:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(79,179,232,0.14),rgba(79,179,232,0) 70%);pointer-events:none')}></div>
+                <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;position:relative')}>
 
-                <div style={S('display:flex;flex-direction:column;gap:16px;grid-column:span 1')}>
-                  {/* Marée */}
-                  <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:24px;padding:22px 24px 14px')}>
-                    <div style={S('display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap')}>
-                      <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:15px")}>La marée au Tréport</div>
-                      <div style={S('font-size:12px;color:#8FA9BE')}>fenêtres de sortie en bleu · trait doré : maintenant</div>
-                    </div>
-                    <svg viewBox="0 0 760 240" style={S('width:100%;height:auto;display:block;margin-top:8px')}>
-                      {(chart ? chart.windows : []).map((w, i) => (
-                        <rect key={i} x={w.x} y="16" width={w.w} height="186" fill="rgba(79,179,232,0.14)" rx="10"></rect>
-                      ))}
-                      <path d={chart ? chart.areaD : ''} fill="rgba(79,179,232,0.10)"></path>
-                      <path d={chart ? chart.d : ''} fill="none" stroke="#0B2239" strokeWidth="2.4" strokeLinecap="round"></path>
-                      {(chart ? chart.hourTicks : []).map((h) => (
-                        <g key={h.label}>
-                          <line x1={h.x} y1="202" x2={h.x} y2="208" stroke="#B9D8EC" strokeWidth="1"></line>
-                          <text x={h.x} y="226" textAnchor="middle" fontFamily="Instrument Sans, sans-serif" fontSize="12" fill="#8FA9BE">{h.label}</text>
-                        </g>
-                      ))}
-                      <line x1={chart ? chart.nowX : -10} y1="12" x2={chart ? chart.nowX : -10} y2="204" stroke="#D98E2B" strokeWidth="1.8" strokeDasharray="5 4"></line>
-                      {(chart ? chart.markers : []).map((m) => (
-                        <g key={m.label}>
-                          <circle cx={m.x} cy={m.y} r="4.5" fill={m.fill} stroke="#FFFFFF" strokeWidth="2"></circle>
-                          <text x={m.x} y={m.ty} textAnchor="middle" fontFamily="Instrument Sans, sans-serif" fontSize="12.5" fontWeight="700" fill="#0B2239">{m.label}</text>
-                        </g>
-                      ))}
-                    </svg>
-                    <div style={S('display:flex;gap:16px;flex-wrap:wrap;margin-top:4px;padding-bottom:6px')}>
-                      {(chart ? chart.extremesToday : []).map((e, i) => (
-                        <div key={i} style={S('font-size:12.5px;color:#5C7893')}><span style={S(`font-weight:700;color:${e.color}`)}>{e.typeLabel}</span> {e.timeLabel} · {e.hLabel}</div>
-                      ))}
-                    </div>
+                  <div style={S('text-align:center;max-width:60ch;margin:0 auto clamp(34px,4vw,52px)')}>
+                    <div style={S('display:inline-block;padding:8px 20px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(158,212,242,0.4);font-size:13px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#BEE3F5;margin-bottom:22px')}>Bon à savoir</div>
+                    <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);line-height:1.06;letter-spacing:-0.02em;margin:0 0 20px")}>Pourquoi réserver <span style={S('background:#BDE8F5;color:#0B2239;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>sur place</span>, le jour&nbsp;J&nbsp;?</h2>
+                    <p style={S('font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:#CFE8F7;margin:0')}>Nos bateaux dépendent de deux choses qu&apos;on ne maîtrise pas&nbsp;: la marée et la mer. Voilà pourquoi tout se décide au dernier moment, pour votre sécurité et votre plaisir.</p>
                   </div>
 
-                  {/* Météo */}
-                  <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:24px;padding:22px 24px')}>
-                    <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:15px;margin-bottom:12px")}>Météo sur le port</div>
-                    {hasMeteo && (
-                      <>
-                        <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px')}>
-                          {meteoTiles.map((t) => (
-                            <div key={t.k} style={S('background:#F2F9FE;border-radius:16px;padding:12px 14px')}>
-                              <div style={S('font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#1D82C4;font-weight:700')}>{t.k}</div>
-                              <div style={S("font-family:'Sora',sans-serif;font-size:17px;font-weight:700;margin-top:4px;color:#0B2239")}>{t.v}</div>
-                              <div style={S('font-size:11.5px;color:#5C7893;margin-top:2px')}>{t.sub}</div>
-                            </div>
-                          ))}
+                  <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:26px')}>
+                    {/* Raison 1 : marée */}
+                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                      <div style={S('position:relative;height:190px')}>
+                        <img src="/uploads/maree-basse-phare.jpg" alt="Le port du Tréport à marée basse" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
+                        <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
+                        <div style={S('position:absolute;left:20px;bottom:16px;display:flex;align-items:center;gap:12px')}>
+                          <span style={S('display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.92)')}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><path d="M2.5 12 C 5 9, 8 9, 10.5 12 C 13 15, 16 15, 18.5 12 C 20 10.3, 21.2 10, 21.8 10.2"></path><path d="M2.5 17.5 C 5 14.5, 8 14.5, 10.5 17.5 C 13 20.5, 16 20.5, 18.5 17.5"></path></svg></span>
+                          <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:#FFFFFF;text-shadow:0 2px 12px rgba(11,34,57,0.6)")}>La marée commande</span>
                         </div>
-                        <div style={S('margin-top:12px;font-size:13px;color:#5C7893;line-height:1.55')}>{meteoDemain}</div>
-                      </>
-                    )}
-                    {!hasMeteo && (
-                      <div style={S('font-size:13.5px;color:#5C7893;animation:ef-pulse 1.6s infinite')}>Relevé météo en cours…</div>
-                    )}
+                      </div>
+                      <div style={S('padding:20px 24px 24px')}>
+                        <p style={S('margin:0;font-size:16px;line-height:1.6;color:#DDF1FB')}>Le port du Tréport <strong style={S('color:#FFFFFF')}>s&apos;assèche à marée basse</strong>. Les bateaux ne sortent que de <strong style={S('color:#FFFFFF')}>2h40 avant</strong> à <strong style={S('color:#FFFFFF')}>3h après</strong> la pleine mer — des horaires qui se décalent chaque jour.</p>
+                      </div>
+                    </div>
+                    {/* Raison 2 : mer */}
+                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                      <div style={S('position:relative;height:190px')}>
+                        <img src="/uploads/tempete-jetee.jpg" alt="Mer agitée sur la jetée du Tréport" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
+                        <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
+                        <div style={S('position:absolute;left:20px;bottom:16px;display:flex;align-items:center;gap:12px')}>
+                          <span style={S('display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.92)')}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><path d="M3 14 L6 14 A2.5 2.5 0 1 0 8 10 M4 18 L14 18 A2.5 2.5 0 1 1 12 22 M3 10 L16 10 A3 3 0 1 0 13 6"></path></svg></span>
+                          <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:#FFFFFF;text-shadow:0 2px 12px rgba(11,34,57,0.6)")}>La mer décide</span>
+                        </div>
+                      </div>
+                      <div style={S('padding:20px 24px 24px')}>
+                        <p style={S('margin:0;font-size:16px;line-height:1.6;color:#DDF1FB')}>La météo est <strong style={S('color:#FFFFFF')}>difficile à prévoir en mer</strong> : vent et vagues changent en quelques heures. Par gros temps, <strong style={S('color:#FFFFFF')}>la sécurité prime</strong> et la sortie est annulée.</p>
+                      </div>
+                    </div>
+                    {/* Raison 3 : confirmation */}
+                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                      <div style={S('position:relative;height:190px')}>
+                        <img src="/uploads/518207258_1636985877347837_501752820138468060_n-780e21f1.jpg" alt="Feu d'artifice sur le port du Tréport à la tombée de la nuit" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
+                        <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
+                        <div style={S('position:absolute;left:20px;bottom:16px;display:flex;align-items:center;gap:12px')}>
+                          <span style={S('display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.92)')}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7 L12 12 L15.5 14"></path></svg></span>
+                          <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:#FFFFFF;text-shadow:0 2px 12px rgba(11,34,57,0.6)")}>Confirmé la veille</span>
+                        </div>
+                      </div>
+                      <div style={S('padding:20px 24px 24px')}>
+                        <p style={S('margin:0;font-size:16px;line-height:1.6;color:#DDF1FB')}>Le capitaine valide chaque sortie <strong style={S('color:#FFFFFF')}>la veille</strong>, et l&apos;ardoise du jour est mise à jour ici en direct. Vous venez <strong style={S('color:#FFFFFF')}>l&apos;esprit tranquille</strong>.</p>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Pas de réservation en ligne */}
+                  <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.35);border-radius:28px;padding:clamp(24px,3vw,38px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:center')}>
+                    <div>
+                      <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.01em;margin-bottom:12px")}>Pourquoi pas de réservation en ligne&nbsp;?</div>
+                      <p style={S('margin:0;font-size:16px;line-height:1.65;color:#CFE8F7')}>Réserver des semaines à l&apos;avance nous obligerait à annuler dès que la marée ou la météo tourne — frustrant pour tout le monde. Chez nous, <strong style={S('color:#FFFFFF')}>aucun risque, aucune déception</strong> : les billets s&apos;achètent sur le quai le jour même.</p>
+                    </div>
+                    <div style={S('display:flex;flex-direction:column;gap:12px')}>
+                      <a href="#ardoise" style={S('display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 26px;border-radius:999px;background:#FFFFFF;color:#0B2239;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 12px 30px rgba(0,0,0,0.25)')}>Voir l&apos;ardoise du jour ↑</a>
+                      <a href={`tel:${TEL_HREF}`} style={S('display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 26px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.4);color:#FFFFFF;font-weight:700;font-size:16px;text-decoration:none')}><span style={S('display:inline-block;width:8px;height:8px;border-radius:50%;background:#4CD98A')}></span>Réserver · {TELEPHONE}</a>
+                    </div>
+                  </div>
+
+                  <div style={S('text-align:center;margin-top:20px;font-size:12px;color:rgba(190,227,245,0.7)')}>{sourceLabel}</div>
                 </div>
               </div>
+              <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={S('display:block;width:100%;height:clamp(40px,6vw,90px);margin-top:-1px')}>
+                <path d="M0,0 L0,35 C200,70 420,15 660,42 C900,70 1140,25 1440,50 L1440,0 Z" fill="#0B2239"></path>
+                <path d="M0,0 L0,18 C240,44 500,8 760,30 C1020,52 1240,16 1440,34 L1440,0 Z" fill="rgba(79,179,232,0.30)"></path>
+              </svg>
             </section>
 
             {/* PANORAMA */}
