@@ -1,0 +1,148 @@
+/* Base reprise des maquettes (Site + Back-office) */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #dff1fb;
+}
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  color: #0b2239;
+  -webkit-font-smoothing: antialiased;
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  color: #1d82c4;
+  text-decoration: none;
+}
+a:hover {
+  color: #0b2239;
+  text-decoration: none;
+}
+button {
+  all: unset;
+  box-sizing: border-box;
+}
+input,
+select {
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+@keyframes ef-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes ef-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-3deg);
+  }
+}
+@keyframes ef-float-flip {
+  0%,
+  100% {
+    transform: scaleX(-1) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-12px) rotate(3deg);
+  }
+}
+@keyframes ef-swim {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(14px);
+  }
+}
+@keyframes ef-swim-flip {
+  0%,
+  100% {
+    transform: scaleX(-1) translateX(0);
+  }
+  50% {
+    transform: scaleX(-1) translateX(-14px);
+  }
+}
+@keyframes ef-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Styles au survol des maquettes (style-hover="…").
+   !important : ils doivent l'emporter sur les styles inline portés. */
+.hvWhite:hover {
+  color: #ffffff !important;
+}
+.hvNavy:hover {
+  color: #0b2239 !important;
+}
+.hvBlue:hover {
+  color: #1d82c4 !important;
+}
+.hvSkyBg:hover {
+  background: #eaf6fd !important;
+}
+.hvPillSky:hover {
+  background: #bde8f5 !important;
+  color: #0b2239 !important;
+}
+.hvPillLight:hover {
+  background: #dff1fb !important;
+  color: #0b2239 !important;
+}
+.hvGlass:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+.hvBlueBg:hover {
+  background: #1d82c4 !important;
+  color: #ffffff !important;
+}
+.hvNavyBg:hover {
+  background: #0b2239 !important;
+  color: #ffffff !important;
+}
+.hvGreenBg:hover {
+  background: #249660 !important;
+}
+.hvPurpleBg:hover {
+  background: #452f85 !important;
+}
+.hvRedBg:hover {
+  background: #e2604c !important;
+}
+.hvDel:hover {
+  color: #c2432e !important;
+  background: #fbe7e2 !important;
+}
+.hvD6:hover {
+  background: #d6edfa !important;
+}
+.hvDim:hover {
+  filter: brightness(0.96);
+}
+.hvOp:hover {
+  opacity: 0.92 !important;
+}
+.hvBorderBlue:hover {
+  border-color: #1d82c4 !important;
+}
+.hvSkyBorder:hover {
+  border-color: #4fb3e8 !important;
+}
