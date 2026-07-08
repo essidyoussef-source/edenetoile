@@ -28,6 +28,11 @@ cockpit.
 | `/cockpit` | Back-office : planning agenda, gestion du jour, calendrier des marées |
 | `/acces` | Porte d'entrée par mot de passe |
 
+L'accès est gardé par un **layout server-component** sur le groupe de routes `app/(site)/`
+(runtime Node), pas par un middleware Edge — cela évite un bug de bundling Edge de
+Next 15.5 (`__dirname is not defined`). Les routes `/api/tides` et `/api/weather`
+vérifient le cookie et renvoient 401 si l'accès n'est pas validé.
+
 ## Mot de passe
 
 Défini par la variable d'environnement `SITE_PASSWORD`. Sans variable, le mot de passe

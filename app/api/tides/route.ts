@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { LAT, LON } from '@/lib/ef-core';
+import { AUTH_COOKIE, isValidToken } from '@/lib/auth';
 
 /* Proxy Open-Meteo Marine (marées + vagues) — cache serveur 30 min pour ne
-   pas taper l'API à chaque visite. */
+   pas taper l'API à chaque visite. Réservé aux visiteurs authentifiés. */
 export async function GET(req: NextRequest) {
+  const token = (await cookies()).get(AUTH_COOKIE)?.value;
+  if (!(await isValidToken(token))) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   const days = Math.min(16, Math.max(1, parseInt(req.nextUrl.searchParams.get('days') || '4', 10) || 4));
   const url =
     `https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}` +

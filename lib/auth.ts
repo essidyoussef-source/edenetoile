@@ -24,3 +24,7 @@ export async function tokenFor(password: string): Promise<string> {
 export async function expectedToken(): Promise<string> {
   return tokenFor(sitePassword());
 }
+
+export async function isValidToken(token: string | undefined): Promise<boolean> {
+  return !!token && token === (await expectedToken());
+}
