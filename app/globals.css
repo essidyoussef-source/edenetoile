@@ -146,3 +146,53 @@ select {
 .hvSkyBorder:hover {
   border-color: #4fb3e8 !important;
 }
+
+/* ============ Responsive mobile (≤ 720px) ============ */
+.hide-mobile {
+  display: initial;
+}
+@media (max-width: 720px) {
+  /* Hero : garantir que tout le texte tient sous le header */
+  .hero-img {
+    height: 640px !important;
+  }
+  .hero-content {
+    padding-bottom: 96px !important;
+  }
+  .hero-eyebrow {
+    margin-bottom: 10px !important;
+  }
+  .hero-h1 {
+    font-size: 27px !important;
+    line-height: 1.12 !important;
+    max-width: none !important;
+  }
+  .hero-p {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Ardoise : les infos + heures avant la grande photo */
+  .ardoise-photo {
+    order: 2;
+    min-height: 190px !important;
+  }
+  .ardoise-body {
+    order: 1;
+  }
+
+  /* Cockpit : masquer la ligne source dans le header, bandeau jour en colonne */
+  .hide-mobile {
+    display: none !important;
+  }
+  .day-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 16px 18px !important;
+  }
+  .day-chips {
+    margin-left: 0 !important;
+  }
+}

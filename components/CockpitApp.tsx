@@ -614,15 +614,12 @@ export default function CockpitApp() {
     <div style={S('min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#D8EEFA 0%,#F2F9FE 22%,#FFFFFF 60%,#EAF6FD 100%)')}>
       {/* HEADER */}
       <header style={S('position:sticky;top:0;z-index:60;background:rgba(11,34,57,0.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(79,179,232,0.35);box-shadow:0 24px 54px rgba(11,34,57,0.45)')}>
-        <div style={S('max-width:1320px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px;flex-wrap:wrap')}>
-          <div style={S('display:flex;align-items:center;gap:14px')}>
+        <div style={S('max-width:1320px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:68px;flex-wrap:wrap')}>
+          <a href="/" title="Voir le site" style={S('display:flex;align-items:center;gap:12px;text-decoration:none')}>
             <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:16px;color:#FFFFFF;white-space:nowrap")}>Étoile Filante <span style={S('color:#4FB3E8')}>✦</span></span>
             <span style={S('padding:5px 13px;border-radius:999px;background:rgba(79,179,232,0.22);border:1px solid rgba(79,179,232,0.45);color:#9ED4F2;font-size:10.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase')}>Back-office</span>
-          </div>
-          <div style={S('display:flex;align-items:center;gap:14px;flex-wrap:wrap')}>
-            <div style={S('font-size:12px;color:#9ED4F2')}>{sourceShort}</div>
-            <a href="/" className="hvPillSky" style={S('padding:10px 20px;border-radius:999px;background:#FFFFFF;color:#0B2239;font-weight:700;font-size:13px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,0.25)')}>Voir le site →</a>
-          </div>
+          </a>
+          <div className="hide-mobile" style={S('font-size:12px;color:#9ED4F2')}>{sourceShort}</div>
         </div>
       </header>
 
@@ -726,16 +723,16 @@ export default function CockpitApp() {
         {view === 'planning' && (
           <>
             {/* bandeau jour */}
-            <div style={S('background:linear-gradient(115deg,#4FB3E8,#1D82C4);border-radius:24px;color:#FFFFFF;padding:18px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 18px 44px rgba(11,34,57,0.18);margin-bottom:18px;position:relative;overflow:hidden')}>
-              <div style={S('position:absolute;top:-60px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.13)')}></div>
-              <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
+            <div className="day-banner" style={S('background:linear-gradient(115deg,#4FB3E8,#1D82C4);border-radius:24px;color:#FFFFFF;padding:18px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 18px 44px rgba(11,34,57,0.18);margin-bottom:18px;position:relative;overflow:hidden')}>
+              <div style={S('position:absolute;top:-60px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.13);z-index:0')}></div>
+              <div className="day-tabs" style={S('display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1')}>
                 {dayTabs.map((d) => (
                   <button key={d.i} onClick={() => { setSelDay(d.i); setAddSlotMsg(''); }} style={S(`cursor:pointer;padding:9px 18px;border-radius:999px;background:${d.bg};color:${d.color};border:1px solid ${d.border};font-weight:700;font-size:13px`)}>
                     {d.label} <span style={S('font-size:11px;opacity:0.75;text-transform:capitalize;margin-left:5px')}>{d.sub}</span>
                   </button>
                 ))}
               </div>
-              <div style={S('margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;position:relative')}>
+              <div className="day-chips" style={S('margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1')}>
                 <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>coef {coefSel}</span>
                 <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>{meteoChip}</span>
                 <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>{windowChip}</span>

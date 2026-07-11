@@ -326,15 +326,15 @@ export default function SiteApp() {
           <div>
             {/* HERO PLEINE BANNIÈRE */}
             <section style={S('position:relative;overflow:hidden')}>
-              <img src="/uploads/679452210_1893613361685086_61712237109849653_n-3.jpg" alt="L'Étoile Filante et ses passagers devant les falaises de craie" style={S('width:100%;height:clamp(500px,62vw,700px);object-fit:cover;display:block')} />
+              <img className="hero-img" src="/uploads/679452210_1893613361685086_61712237109849653_n-3.jpg" alt="L'Étoile Filante et ses passagers devant les falaises de craie" style={S('width:100%;height:clamp(500px,62vw,700px);object-fit:cover;display:block')} />
               <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0.18) 0%,rgba(11,34,57,0.10) 40%,rgba(11,34,57,0.72) 100%)')}></div>
               <div style={S('position:absolute;inset:0;display:flex;align-items:flex-end')}>
-                <div style={S('max-width:1240px;margin:0 auto;width:100%;padding:0 24px clamp(120px,14vw,170px)')}>
-                  <div style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Promenades en bateau · Le Tréport</div>
-                  <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:18ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
+                <div className="hero-content" style={S('max-width:1240px;margin:0 auto;width:100%;padding:0 24px clamp(120px,14vw,170px)')}>
+                  <div className="hero-eyebrow" style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Promenades en bateau · Le Tréport</div>
+                  <h1 className="hero-h1" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:18ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
                     <span style={S('background:rgba(189,232,245,0.92);color:#0B2239;padding:1px 14px;border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>Balades en mer</span> au pied des plus hautes falaises d&apos;Europe
                   </h1>
-                  <p style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Embarquez pour 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise. Une sortie commentée, au rythme de la marée.</p>
+                  <p className="hero-p" style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Embarquez pour 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise. Une sortie commentée, au rythme de la marée.</p>
                   <div style={S('display:flex;gap:12px;flex-wrap:wrap')}>
                     <a href="#ardoise" className="hvPillLight" style={S('padding:14px 26px;border-radius:999px;background:#FFFFFF;color:#0B2239;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 10px 30px rgba(11,34,57,0.3)')}>Horaires du jour ↓</a>
                     <a href={`tel:${TEL_HREF}`} className="hvGlass" style={S('padding:14px 26px;border-radius:999px;background:rgba(255,255,255,0.16);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);color:#FFFFFF;font-weight:700;font-size:15px;text-decoration:none')}>Réserver · {TELEPHONE}</a>
@@ -350,14 +350,14 @@ export default function SiteApp() {
             {/* MÉTÉO DU JOUR */}
             <section style={S('max-width:1240px;margin:clamp(-90px,-9vw,-60px) auto 0;padding:0 24px;position:relative;z-index:6')}>
               <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;box-shadow:0 24px 60px rgba(11,34,57,0.18);color:#0B2239;padding:18px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden')}>
-                <div style={S('position:absolute;top:-60px;right:-40px;width:190px;height:190px;border-radius:50%;background:#F2F9FE;pointer-events:none')}></div>
-                <div style={S('min-width:150px')}>
+                <div style={S('position:absolute;top:-60px;right:-40px;width:190px;height:190px;border-radius:50%;background:#F2F9FE;pointer-events:none;z-index:0')}></div>
+                <div style={S('min-width:150px;position:relative;z-index:1')}>
                   <div style={S('font-size:10.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#1D82C4')}>Météo du jour</div>
                   <div style={S('font-size:12px;font-weight:600;color:#8FA9BE;margin-top:2px;text-transform:capitalize')}>{todayLabel}</div>
                 </div>
                 {hasMeteo && (
                   <>
-                    <div style={S('display:flex;align-items:center;gap:16px')}>
+                    <div style={S('display:flex;align-items:center;gap:16px;position:relative;z-index:1')}>
                       <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:46px;line-height:1;color:#0B2239")}>{wxTemp}</div>
                       <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke={wxIconColor} strokeWidth="1.7" strokeLinecap="round">
                         {wxSun && (<><circle cx="12" cy="12" r="4.5"></circle><line x1="12" y1="3" x2="12" y2="5.5"></line><line x1="12" y1="18.5" x2="12" y2="21"></line><line x1="3" y1="12" x2="5.5" y2="12"></line><line x1="18.5" y1="12" x2="21" y2="12"></line><line x1="5.6" y1="5.6" x2="7.4" y2="7.4"></line><line x1="16.6" y1="16.6" x2="18.4" y2="18.4"></line><line x1="5.6" y1="18.4" x2="7.4" y2="16.6"></line><line x1="16.6" y1="7.4" x2="18.4" y2="5.6"></line></>)}
@@ -369,7 +369,7 @@ export default function SiteApp() {
                       </svg>
                       <div style={S('font-size:15px;font-weight:700;max-width:16ch;color:#0B2239')}>{wxLabel}</div>
                     </div>
-                    <div style={S('display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;position:relative')}>
+                    <div style={S('display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;position:relative;z-index:1')}>
                       <span style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;color:#1D82C4')}>vent {wxWind}</span>
                       <span style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;color:#1D82C4')}>rafales {wxGust}</span>
                       <span style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;color:#1D82C4')}>mer {wxWave}</span>
@@ -393,12 +393,12 @@ export default function SiteApp() {
                 <div style={S('position:absolute;top:-140px;right:-100px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(79,179,232,0.22),rgba(79,179,232,0) 70%);pointer-events:none')}></div>
                 <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;position:relative')}>
                   <div style={S('position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,32px);align-items:stretch')}>
-                    <div style={S('position:relative;border-radius:22px;overflow:hidden;min-height:280px')}>
+                    <div className="ardoise-photo" style={S('position:relative;border-radius:22px;overflow:hidden;min-height:280px')}>
                       <img src="/uploads/IMG_1313.jpg" alt="L'EDEN en balade, passagers à bord" style={S('position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;left:12px;bottom:12px;background:rgba(11,34,57,0.6);backdrop-filter:blur(8px);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:600;color:#DFF1FB')}>En mer, au large du Tréport</div>
                     </div>
 
-                    <div style={S('display:flex;flex-direction:column')}>
+                    <div className="ardoise-body" style={S('display:flex;flex-direction:column')}>
                       <div style={S('display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap')}>
                         <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.01em;margin:0")}>L&apos;ardoise du jour</h2>
                         <div style={S('font-size:12.5px;font-weight:600;color:#9ED4F2;text-transform:capitalize')}>{todayLabel} · coef {coefToday}</div>
@@ -581,62 +581,8 @@ export default function SiteApp() {
               </svg>
             </section>
 
-            {/* L'EXPÉRIENCE À BORD */}
-            <section style={S('position:relative;padding:clamp(56px,8vw,96px) 0 0')}>
-              <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(28px,4vw,52px);align-items:center')}>
-                <div>
-                  <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>L&apos;expérience à bord</div>
-                  <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,44px);line-height:1.08;letter-spacing:-0.02em;margin:0 0 16px")}>Deux bateaux, un capitaine <span style={S('background:#BDE8F5;border-radius:12px;padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>conteur</span></h2>
-                  <p style={S('font-size:15.5px;line-height:1.7;color:#5C7893;margin:0 0 24px;max-width:46ch')}>L&apos;Étoile Filante et L&apos;EDEN se relaient à quai pour un départ toutes les 30 minutes. À la barre, Gautier commente chaque sortie : le port, la craie, les oiseaux, les histoires de marins du Tréport.</p>
-                  <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px')}>
-                    <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:18px;padding:16px 18px')}>
-                      <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:30px;color:#0B2239;line-height:1")}>2</div>
-                      <div style={S('font-size:12px;font-weight:700;color:#1D82C4;margin-top:5px;line-height:1.4')}>bateaux en alternance à quai</div>
-                    </div>
-                    <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:18px;padding:16px 18px')}>
-                      <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:30px;color:#0B2239;line-height:1")}>30<span style={S('font-size:16px')}> min</span></div>
-                      <div style={S('font-size:12px;font-weight:700;color:#1D82C4;margin-top:5px;line-height:1.4')}>entre deux départs</div>
-                    </div>
-                    <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:18px;padding:16px 18px')}>
-                      <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:30px;color:#0B2239;line-height:1")}>90</div>
-                      <div style={S('font-size:12px;font-weight:700;color:#1D82C4;margin-top:5px;line-height:1.4')}>passagers à bord de L&apos;EDEN</div>
-                    </div>
-                    <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:18px;padding:16px 18px')}>
-                      <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:30px;color:#0B2239;line-height:1")}>0</div>
-                      <div style={S('font-size:12px;font-weight:700;color:#1D82C4;margin-top:5px;line-height:1.4')}>réservation nécessaire : billets sur le quai</div>
-                    </div>
-                  </div>
-                </div>
-
-                <img src="/uploads/IMG_1296.jpg" alt="L'Étoile Filante pavoisée en mer" style={S('width:100%;height:clamp(260px,26vw,360px);object-fit:cover;border-radius:26px;display:block')} />
-              </div>
-
-              {/* défilé horizontal « Ce que vous verrez » */}
-              <div style={S('max-width:1240px;margin:clamp(30px,4vw,46px) auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap')}>
-                <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4')}>Ce que vous verrez en mer</div>
-                <div style={S('font-size:12px;color:#8FA9BE')}>faites défiler →</div>
-              </div>
-              <div style={S('overflow-x:auto;padding:14px 0 26px;scrollbar-width:thin')}>
-                <div style={S('display:flex;gap:16px;width:max-content;padding:0 max(24px, calc((100vw - 1240px) / 2 + 24px))')}>
-                  {([
-                    ['/uploads/679452210_1893613361685086_61712237109849653_n.jpg', 'Les falaises de craie vues du bateau', "Les plus hautes falaises de craie d'Europe", "Une muraille blanche de plus de 100 mètres, que l'on ne voit vraiment que depuis la mer."],
-                    ['/uploads/IMG_1320.jpg', 'Les villas Belle Époque de Mers-les-Bains', 'Les villas Belle Époque de Mers-les-Bains', "Leurs façades colorées défilent le long de la plage, jusqu'au Bois de Cise."],
-                    ['/uploads/679031361_1893613261685096_5120760682960525618_n.jpg', 'Oiseaux marins au large du Tréport', 'Phoques et oiseaux marins', 'Goélands, mouettes et cormorans nichent dans la craie · avec un peu de chance, un phoque au rendez-vous.'],
-                    ['/uploads/489852318_1545069553206137_8951543170285698201_n.jpg', 'Le Tréport et son funiculaire vus de la mer', "Le Tréport comme vous ne l'avez jamais vu", 'Le port, le phare, le funiculaire creusé dans la falaise : tout le décor du pays de la craie, côté large.'],
-                    ['/uploads/557359461_1300992931813752_8519210241802143735_n.jpg', 'Les deux bateaux en mer', 'Le ballet des deux bateaux', "L'Étoile Filante et L'EDEN se croisent au large : saluez l'autre équipage !"],
-                    ['/uploads/480689857_1133889561857424_778771142117709038_n.jpg', "L'entrée du port et son feu vert", 'Le passage de la jetée', 'Le moment préféré des enfants : le feu vert, la houle qui accueille le bateau, le large qui s\'ouvre.'],
-                  ] as [string, string, string, string][]).map(([src, alt, title, desc]) => (
-                    <div key={title} style={S('width:300px;flex:none;background:#FFFFFF;border:1px solid #DCEDF8;border-radius:24px;overflow:hidden;box-shadow:0 12px 32px rgba(20,93,160,0.10)')}>
-                      <img src={src} alt={alt} style={S('width:100%;height:170px;object-fit:cover;display:block')} />
-                      <div style={S('padding:16px 18px 18px')}>
-                        <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:15.5px;color:#0B2239")}>{title}</div>
-                        <div style={S('font-size:13px;color:#5C7893;line-height:1.55;margin-top:5px')}>{desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
+            {/* EMBARQUER, C'EST SIMPLE */}
+            <section style={S('position:relative;padding:clamp(40px,6vw,72px) 0 0')}>
               {/* vague full frame de clôture */}
               <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={S('display:block;width:100%;height:clamp(46px,7vw,100px)')}>
                 <path d="M0,100 L0,55 C180,20 360,85 560,58 C760,30 940,80 1140,55 C1290,36 1380,58 1440,48 L1440,100 Z" fill="#BDE4F6"></path>
