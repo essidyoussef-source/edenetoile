@@ -646,17 +646,19 @@ export default function CockpitApp() {
         {view === 'semaine' && (
           <>
             <div style={S('background:#FFFFFF;border:1px solid #CBE6F6;border-radius:24px;padding:20px 22px;box-shadow:0 10px 30px rgba(20,93,160,0.08);margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap')}>
-              <button onClick={() => setWeekOffset(weekOffset - 1)} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px')}>←</button>
-              <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:17px;min-width:210px;text-align:center;text-transform:capitalize")}>{weekLabel}</div>
-              <button onClick={() => setWeekOffset(weekOffset + 1)} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px')}>→</button>
-              <div style={S('display:flex;align-items:center;gap:6px;margin-left:8px')}>
+              <div className="week-nav" style={S('display:flex;align-items:center;gap:14px')}>
+                <button onClick={() => setWeekOffset(weekOffset - 1)} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none')}>←</button>
+                <div className="week-label" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:17px;min-width:210px;text-align:center;text-transform:capitalize")}>{weekLabel}</div>
+                <button onClick={() => setWeekOffset(weekOffset + 1)} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none')}>→</button>
+              </div>
+              <div className="week-scope" style={S('display:flex;align-items:center;gap:6px;margin-left:8px;flex-wrap:wrap')}>
                 <span style={S('font-size:11px;font-weight:800;letter-spacing:0.08em;color:#8FA9BE')}>VUE</span>
                 {scopeTabs.map((sc) => (
                   <button key={sc.id} onClick={() => { setScope(sc.id); setWeekOffset(0); }} style={S(`cursor:pointer;padding:8px 16px;border-radius:999px;background:${sc.bg};color:${sc.color};border:1px solid ${sc.border};font-weight:700;font-size:12px`)}>{sc.label}</button>
                 ))}
               </div>
               <div style={S('flex:1')}></div>
-              <div style={S('display:flex;align-items:center;gap:8px;background:#F2F9FE;border-radius:999px;padding:7px 14px')}>
+              <div className="week-filter" style={S('display:flex;align-items:center;gap:8px;background:#F2F9FE;border-radius:999px;padding:7px 14px;flex-wrap:wrap')}>
                 <span style={S('font-size:11px;font-weight:800;color:#1D82C4')}>PAS AVANT</span>
                 <input type="time" ref={wkFromRef} defaultValue={cfg.noBefore || ''} style={S('padding:5px 9px;border:1px solid #A9D6EF;border-radius:999px;font-size:12.5px;background:#FFF;color:#0B2239')} />
                 <span style={S('font-size:11px;font-weight:800;color:#1D82C4')}>PAS APRÈS</span>
@@ -705,7 +707,7 @@ export default function CockpitApp() {
               </div>
             </div>
 
-            <div style={S('display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px;background:#FFFFFF;border:1px solid #CBE6F6;border-radius:999px;padding:11px 20px')}>
+            <div className="legend-bar" style={S('display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px;background:#FFFFFF;border:1px solid #CBE6F6;border-radius:999px;padding:11px 20px')}>
               <span style={S('font-size:11.5px;font-weight:800;color:#5C7893;letter-spacing:0.06em')}>LÉGENDE</span>
               <span style={S('display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#5C7893')}><span style={S('width:12px;height:12px;border-radius:4px;background:#DCEFFB;border-left:3px solid #1D82C4')}></span>L&apos;EDEN</span>
               <span style={S('display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#5C7893')}><span style={S('width:12px;height:12px;border-radius:4px;background:#FFF0DB;border-left:3px solid #D9862B')}></span>L&apos;Étoile Filante</span>
@@ -732,11 +734,6 @@ export default function CockpitApp() {
                   </button>
                 ))}
               </div>
-              <div className="day-chips" style={S('margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1')}>
-                <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>coef {coefSel}</span>
-                <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>{meteoChip}</span>
-                <span style={S('background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700')}>{windowChip}</span>
-              </div>
             </div>
 
             <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start')}>
@@ -758,7 +755,7 @@ export default function CockpitApp() {
                         <button onClick={d.annulerTout} className="hvRedBg" style={S('cursor:pointer;padding:8px 15px;border-radius:999px;background:rgba(240,112,92,0.85);color:#FFF;font-weight:700;font-size:11.5px')}>Tout annuler</button>
                       </div>
                     </div>
-                    <div style={S('padding:16px 20px 20px')}>
+                    <div style={S('padding:16px 20px 20px;display:flex;flex-direction:column')}>
                       {/* bateau qui ouvre la journée / l'après-midi */}
                       <div style={S('display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:#F2F9FE;border:1px solid #DCEDF8;border-radius:16px;padding:10px 15px;margin-bottom:13px')}>
                         <div style={S('display:flex;align-items:center;gap:7px')}>
@@ -775,6 +772,7 @@ export default function CockpitApp() {
                         </div>
                         <div style={S('font-size:10.5px;color:#8FA9BE;flex:1;min-width:160px;text-align:right')}>Alternance auto : celui qui ouvre aujourd&apos;hui n&apos;ouvre pas demain</div>
                       </div>
+                      <div className="pb-slots">
                       {loading && (
                         <div style={S('font-size:13.5px;color:#5C7893;padding:14px 0;animation:ef-pulse 1.6s infinite')}>Calcul de la marée…</div>
                       )}
@@ -822,9 +820,10 @@ export default function CockpitApp() {
                           <div style={S('font-size:12px;color:#C2432E;font-weight:700')}>{addSlotMsg}</div>
                         </div>
                       )}
+                      </div>
 
                       {/* marée + météo du jour */}
-                      <div style={S('margin-top:15px;border-top:1px dashed #CBE6F6;padding-top:15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;align-items:start')}>
+                      <div className="pb-tide" style={S('margin-top:15px;border-top:1px dashed #CBE6F6;padding-top:15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;align-items:start')}>
                         <div style={S('background:#F7FBFE;border:1px solid #E4EFF7;border-radius:18px;padding:14px 16px 6px')}>
                           <div style={S('display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap')}>
                             <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px")}>La marée</div>
@@ -1023,9 +1022,11 @@ export default function CockpitApp() {
         {view === 'calendrier' && (
           <div style={S('background:#FFFFFF;border:1px solid #CBE6F6;border-radius:24px;padding:24px 26px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
             <div style={S('display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px')}>
-              <button onClick={() => setCalMonth(new Date(calBase.getFullYear(), calBase.getMonth() - 1, 1))} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px')}>←</button>
-              <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:20px;text-transform:capitalize;min-width:190px;text-align:center")}>{MONTHS_FR[calBase.getMonth()] + ' ' + calBase.getFullYear()}</div>
-              <button onClick={() => setCalMonth(new Date(calBase.getFullYear(), calBase.getMonth() + 1, 1))} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px')}>→</button>
+              <div className="week-nav" style={S('display:flex;align-items:center;gap:16px')}>
+                <button onClick={() => setCalMonth(new Date(calBase.getFullYear(), calBase.getMonth() - 1, 1))} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none')}>←</button>
+                <div className="week-label" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:20px;text-transform:capitalize;min-width:190px;text-align:center")}>{MONTHS_FR[calBase.getMonth()] + ' ' + calBase.getFullYear()}</div>
+                <button onClick={() => setCalMonth(new Date(calBase.getFullYear(), calBase.getMonth() + 1, 1))} className="hvD6" style={S('cursor:pointer;width:38px;height:38px;border-radius:50%;background:#EAF6FD;color:#1D82C4;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none')}>→</button>
+              </div>
               <div style={S('margin-left:auto;font-size:12px;color:#8FA9BE;max-width:420px;line-height:1.5')}>Marées calculées toute l&apos;année (estimation harmonique locale, à confirmer avec l&apos;annuaire SHOM). Météo affichée dès qu&apos;elle est disponible (~10 jours à l&apos;avance). <strong style={S('color:#5C7893')}>Cliquez un jour pour afficher son graphique.</strong></div>
             </div>
 
