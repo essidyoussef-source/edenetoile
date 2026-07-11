@@ -528,7 +528,9 @@ export default function CockpitApp() {
     ? EF.fmtDateLong(monday)
     : EF.fmtDateShort(monday) + ' → ' + EF.fmtDateShort(new Date(monday.getTime() + (nDays - 1) * 864e5));
   const weekCols = nDays;
-  const gridMinW = nDays === 1 ? 420 : 54 + nDays * 128;
+  // Vue « Jour » : pas de largeur minimale → la grille remplit l'écran, aucun
+  // scroll horizontal. Vues 3 jours / Semaine : largeur mini = scroll possible.
+  const gridMinW = nDays === 1 ? 0 : 54 + nDays * 128;
 
   const banner = admin.banner || { text: '', on: false };
   const sourceShort = !data
@@ -736,7 +738,7 @@ export default function CockpitApp() {
               </div>
             </div>
 
-            <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start')}>
+            <div className="day-cols" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start')}>
               {/* ====== COLONNE PLANNING DU JOUR ====== */}
               <div style={S('display:flex;flex-direction:column;gap:16px;min-width:0')}>
                 {/* VOLET BALADES */}

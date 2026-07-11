@@ -236,3 +236,12 @@ select {
     margin-bottom: 15px;
   }
 }
+
+/* Anti-débordement horizontal global (aucune page ne doit glisser lat.) */
+html, body { max-width: 100%; overflow-x: hidden; }
+@media (max-width: 720px) {
+  /* Gestion du jour : 1 colonne pleine largeur (au lieu de 2 col. de 380px mini) */
+  .day-cols {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
