@@ -87,6 +87,29 @@ export default function SiteApp() {
     };
   }, []);
 
+  // Révélation douce des blocs au défilement (page d'accueil)
+  useEffect(() => {
+    if (!mounted) return;
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((e) => e.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add('in');
+            io.unobserve(en.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 }
+    );
+    els.forEach((e) => io.observe(e));
+    return () => io.disconnect();
+  }, [mounted, page]);
+
   const go = (p: Page) => (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     setPage(p);
@@ -345,7 +368,7 @@ export default function SiteApp() {
 
             {/* MÉTÉO DU JOUR */}
             <section style={S('max-width:1240px;margin:clamp(-90px,-9vw,-60px) auto 0;padding:0 24px;position:relative;z-index:6')}>
-              <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;box-shadow:0 24px 60px rgba(11,34,57,0.18);color:#0B2239;padding:18px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden')}>
+              <div className="reveal" style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;box-shadow:0 24px 60px rgba(11,34,57,0.18);color:#0B2239;padding:18px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden')}>
                 <div style={S('position:absolute;top:-60px;right:-40px;width:190px;height:190px;border-radius:50%;background:#F2F9FE;pointer-events:none;z-index:0')}></div>
                 <div style={S('min-width:150px;position:relative;z-index:1')}>
                   <div style={S('font-size:10.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#1D82C4')}>Météo du jour</div>
@@ -535,7 +558,7 @@ export default function SiteApp() {
                     <div style={S("display:inline-block;background:#E9F8FF;box-shadow:0 8px 24px rgba(11,34,57,0.12);border-radius:14px;padding:10px 26px;font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(17px,1.9vw,22px);letter-spacing:0.12em;text-transform:uppercase;color:#1D82C4;margin-bottom:16px")}>Nos sorties en mer</div>
                     <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,40px);letter-spacing:-0.02em;margin:0;color:#0B2239")}>Trois façons de <span style={S('background:#FFFFFF;border-radius:12px;padding:1px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>prendre le large</span></h2>
                   </div>
-                  <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
+                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
                     <a href="#" onClick={go('balades')} style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
                       <img src="/uploads/IMG_1313.jpg" alt="Balade 30 min" style={S('width:100%;height:380px;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 40%,rgba(11,34,57,0.82) 100%)')}></div>
@@ -593,7 +616,7 @@ export default function SiteApp() {
                   <div style={S('text-align:center;margin-bottom:32px')}>
                     <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(24px,3vw,38px);letter-spacing:-0.02em;margin:0;color:#0B2239")}>Embarquer, c&apos;est <span style={S('background:#FFFFFF;border-radius:12px;padding:1px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>simple comme bonjour</span></h2>
                   </div>
-                  <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px')}>
+                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px')}>
                     <div style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14);position:relative')}>
                       <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
                         <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:26px;color:#4FB3E8")}>1</span>
@@ -652,7 +675,7 @@ export default function SiteApp() {
                     <p style={S('font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:#CFE8F7;margin:0')}>Nos bateaux dépendent de deux choses qu&apos;on ne maîtrise pas&nbsp;: la marée et la mer. Voilà pourquoi tout se décide au dernier moment, pour votre sécurité et votre plaisir.</p>
                   </div>
 
-                  <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:26px')}>
+                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:26px')}>
                     {/* Raison 1 : marée */}
                     <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
                       <div style={S('position:relative;height:190px')}>
@@ -720,14 +743,14 @@ export default function SiteApp() {
 
             {/* PANORAMA */}
             <section style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px 0')}>
-              <div style={S('position:relative;border-radius:28px;overflow:hidden')}>
+              <div className="reveal" style={S('position:relative;border-radius:28px;overflow:hidden')}>
                 <img src="/uploads/IMG_1320.jpg" alt="Mers-les-Bains et ses villas Belle Époque, depuis la mer" style={S('width:100%;height:clamp(280px,38vw,460px);object-fit:cover;display:block')} />
                 <div style={S('position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:999px;padding:9px 20px;font-size:13px;font-weight:600;color:#0B2239')}>Mers-les-Bains et ses villas Belle Époque · vues du large</div>
               </div>
             </section>
 
             {/* FACEBOOK + ACCÈS */}
-            <section style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px clamp(64px,9vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px')}>
+            <section className="reveal" style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px clamp(64px,9vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px')}>
               <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px')}>
                 <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4')}>Actualités</div>
                 <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:23px;letter-spacing:-0.01em")}>Suivez la mer au jour le jour</div>
