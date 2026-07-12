@@ -9,6 +9,7 @@ import { S } from '@/lib/s';
 import { tideChart, TideChartData } from '@/lib/chart';
 import * as EF from '@/lib/ef-core';
 import type { DaySlot, EFData, EFState, SlotStatus } from '@/lib/ef-core';
+import { TREPORT_REF, TREPORT_REF_ROWS } from '@/lib/treport-tides';
 
 type View = 'semaine' | 'planning' | 'calendrier';
 type Scope = 'jour' | '3j' | 'semaine7';
@@ -1071,6 +1072,57 @@ export default function CockpitApp() {
                   )}
                 </button>
               ))}
+            </div>
+
+            {/* ---- Références marégraphiques du port du Tréport ---- */}
+            <div style={S('margin-top:22px;background:#F2F9FE;border:1px solid #CBE6F6;border-radius:20px;padding:20px 22px')}>
+              <div style={S('display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px')}>
+                <span style={S('display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#EAF6FD;flex:none')}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><path d="M2.5 12 C 5 9, 8 9, 10.5 12 C 13 15, 16 15, 18.5 12 C 20 10.3, 21.2 10, 21.8 10.2"></path><path d="M2.5 17.5 C 5 14.5, 8 14.5, 10.5 17.5 C 13 20.5, 16 20.5, 18.5 17.5"></path><path d="M2.5 6.5 C 5 3.5, 8 3.5, 10.5 6.5 C 13 9.5, 16 9.5, 18.5 6.5"></path></svg>
+                </span>
+                <div>
+                  <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:16px;color:#0B2239")}>Références marégraphiques · {TREPORT_REF.nom}</div>
+                  <div style={S('font-size:12px;color:#8FA9BE;margin-top:1px')}>{TREPORT_REF.departement} · {TREPORT_REF.mer}</div>
+                </div>
+                <span style={S('margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#8A6A1B;background:#FBF3DC;border:1px solid #F0E2B8;border-radius:999px;padding:5px 12px')}>Indicatif · à confirmer SHOM</span>
+              </div>
+
+              <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px')}>
+                {TREPORT_REF_ROWS.map((r) => (
+                  <div key={r.k} style={S('display:flex;flex-direction:column;gap:2px;background:#FFFFFF;border:1px solid #DCEDF8;border-radius:14px;padding:11px 14px')}>
+                    <div style={S('font-size:10.5px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#1D82C4')}>{r.k}</div>
+                    <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:#0B2239")}>{r.v}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={S('margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px')}>
+                <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:14px;padding:12px 15px')}>
+                  <div style={S('font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#1D82C4;margin-bottom:6px')}>Repères de coefficient</div>
+                  <div style={S('display:flex;flex-direction:column;gap:4px')}>
+                    {TREPORT_REF.coefficients.reperes.map((c) => (
+                      <div key={c.c} style={S('display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:#5C7893')}>
+                        <span style={S("font-family:'Sora',sans-serif;font-weight:800;color:#0B2239;min-width:58px")}>{c.c}</span>
+                        <span>{c.libelle}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:14px;padding:12px 15px;display:flex;flex-direction:column;gap:8px')}>
+                  <div>
+                    <div style={S('font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#1D82C4;margin-bottom:4px')}>Fenêtre de sortie</div>
+                    <div style={S('font-size:12.5px;color:#5C7893;line-height:1.55')}>{TREPORT_REF.fenetreSortie}</div>
+                  </div>
+                  <div>
+                    <div style={S('font-size:11px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#1D82C4;margin-bottom:4px')}>Rattachement</div>
+                    <div style={S('font-size:12.5px;color:#5C7893;line-height:1.55')}>{TREPORT_REF.rattachementNote}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={S('margin-top:12px;font-size:11px;color:#8FA9BE;line-height:1.6')}>
+                Sources : {TREPORT_REF.sources.join(' · ')}. Valeurs indicatives (ordres de grandeur fiables) · le coefficient et les hauteurs affichés par l&apos;appli sont <strong style={S('color:#5C7893')}>calculés</strong>, pas lus dans l&apos;annuaire officiel. Pour du 100&nbsp;% officiel : intégrer les prédictions SHOM du port de {TREPORT_REF.portDeReference}.
+              </div>
             </div>
           </div>
         )}
