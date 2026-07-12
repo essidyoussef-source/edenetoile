@@ -291,10 +291,14 @@ export default function SiteApp() {
           )}
           {!isDesktop && (
             <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1.5px solid #FFFFFF;color:#FFFFFF')}>
-              <svg width="24" height="17" viewBox="0 0 24 17" fill="none" stroke="#FFFFFF" strokeWidth="1.7" strokeLinecap="round">
-                <path d="M2 4 Q 4 2 6 4 T 10 4 T 14 4 T 18 4 T 22 4"></path>
-                <path d="M2 8.5 Q 4 6.5 6 8.5 T 10 8.5 T 14 8.5 T 18 8.5 T 22 8.5"></path>
-                <path d="M2 13 Q 4 11 6 13 T 10 13 T 14 13 T 18 13 T 22 13"></path>
+              <svg width="25" height="21" viewBox="0 0 28 23" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                {/* 3 crêtes qui déferlent */}
+                <path d="M2 9.5 C 2.2 4.5, 7 4, 7 8.2 C 7 10.4, 4.6 10.4, 4.9 8.2"></path>
+                <path d="M10 9.5 C 10.2 4.5, 15 4, 15 8.2 C 15 10.4, 12.6 10.4, 12.9 8.2"></path>
+                <path d="M18 9.5 C 18.2 4.5, 23 4, 23 8.2 C 23 10.4, 20.6 10.4, 20.9 8.2"></path>
+                {/* 2 lignes ondulées */}
+                <path d="M2 15 Q 5 13 8 15 T 14 15 T 20 15 T 26 15"></path>
+                <path d="M2 19 Q 5 17 8 19 T 14 19 T 20 19 T 26 19"></path>
               </svg>
             </button>
           )}
