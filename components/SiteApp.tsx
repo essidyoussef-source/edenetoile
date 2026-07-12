@@ -290,12 +290,12 @@ export default function SiteApp() {
             </>
           )}
           {!isDesktop && (
-            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;border:1.5px solid #FFFFFF;color:#FFFFFF;font-weight:700;font-size:13px')}>
-              Menu
-              <span style={S('display:flex;flex-direction:column;gap:4px')}>
-                <span style={S('display:block;width:16px;height:2px;border-radius:2px;background:#FFFFFF')}></span>
-                <span style={S('display:block;width:16px;height:2px;border-radius:2px;background:#FFFFFF')}></span>
-              </span>
+            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1.5px solid #FFFFFF;color:#FFFFFF')}>
+              <svg width="24" height="17" viewBox="0 0 24 17" fill="none" stroke="#FFFFFF" strokeWidth="1.7" strokeLinecap="round">
+                <path d="M2 4 Q 4 2 6 4 T 10 4 T 14 4 T 18 4 T 22 4"></path>
+                <path d="M2 8.5 Q 4 6.5 6 8.5 T 10 8.5 T 14 8.5 T 18 8.5 T 22 8.5"></path>
+                <path d="M2 13 Q 4 11 6 13 T 10 13 T 14 13 T 18 13 T 22 13"></path>
+              </svg>
             </button>
           )}
         </div>
