@@ -290,15 +290,15 @@ export default function SiteApp() {
             </>
           )}
           {!isDesktop && (
-            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1.5px solid #FFFFFF;color:#FFFFFF')}>
-              <svg width="25" height="21" viewBox="0 0 28 23" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;padding:8px 4px;background:transparent;color:#FFFFFF')}>
+              <svg width="34" height="26" viewBox="0 0 26 20" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {/* 3 crêtes qui déferlent */}
-                <path d="M2 9.5 C 2.2 4.5, 7 4, 7 8.2 C 7 10.4, 4.6 10.4, 4.9 8.2"></path>
-                <path d="M10 9.5 C 10.2 4.5, 15 4, 15 8.2 C 15 10.4, 12.6 10.4, 12.9 8.2"></path>
-                <path d="M18 9.5 C 18.2 4.5, 23 4, 23 8.2 C 23 10.4, 20.6 10.4, 20.9 8.2"></path>
+                <path d="M1 9 C 2 3, 5 1, 7 3.4 C 8.6 5.3, 6.6 7, 5.2 5.2"></path>
+                <path d="M8.5 9 C 9.5 3, 12.5 1, 14.5 3.4 C 16.1 5.3, 14.1 7, 12.7 5.2"></path>
+                <path d="M16 9 C 17 3, 20 1, 22 3.4 C 23.6 5.3, 21.6 7, 20.2 5.2"></path>
                 {/* 2 lignes ondulées */}
-                <path d="M2 15 Q 5 13 8 15 T 14 15 T 20 15 T 26 15"></path>
-                <path d="M2 19 Q 5 17 8 19 T 14 19 T 20 19 T 26 19"></path>
+                <path d="M1.5 13.5 Q 5 11 8.5 13.5 T 15.5 13.5 T 22.5 13.5"></path>
+                <path d="M1.5 17.5 Q 5 15 8.5 17.5 T 15.5 17.5 T 22.5 17.5"></path>
               </svg>
             </button>
           )}
