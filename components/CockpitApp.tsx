@@ -988,15 +988,15 @@ export default function CockpitApp() {
                 <div style={S('background:#FFFFFF;border:1px solid #CBE6F6;border-radius:24px;padding:20px 22px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
                   <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:15px;margin-bottom:3px")}>Carnet de réservations</div>
                   <div style={S('font-size:11.5px;color:#8FA9BE;margin-bottom:12px')}>Téléphone · <span style={S('text-transform:capitalize')}>{EF.fmtDateShort(selDate)}</span> · {resaTotal}</div>
-                  <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px')}>
-                    <input type="text" ref={resaNameRef} placeholder="Nom" style={S("padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
-                    <input type="tel" ref={resaTelRef} placeholder="Téléphone" style={S("padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
-                    <select ref={resaSlotRef} style={S("padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239;font-family:'Instrument Sans',sans-serif")}>
+                  <div style={S('display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:9px')}>
+                    <input type="text" ref={resaNameRef} placeholder="Nom" style={S("min-width:0;width:100%;padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
+                    <input type="tel" ref={resaTelRef} placeholder="Téléphone" style={S("min-width:0;width:100%;padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
+                    <select ref={resaSlotRef} style={S("min-width:0;width:100%;padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239;font-family:'Instrument Sans',sans-serif")}>
                       {slotOptions.map((o) => (
                         <option key={o.id} value={o.id}>{o.label}</option>
                       ))}
                     </select>
-                    <input type="number" ref={resaPaxRef} placeholder="Nb pers." min="1" style={S("padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
+                    <input type="number" ref={resaPaxRef} placeholder="Nb pers." min="1" style={S("min-width:0;width:100%;padding:9px 15px;border:1px solid #A9D6EF;border-radius:999px;font-size:13px;background:#FFF;color:#0B2239")} />
                   </div>
                   <button onClick={addResa} className="hvGreenBg" style={S('cursor:pointer;padding:9px 17px;border-radius:999px;background:#2BB673;color:#FFF;font-weight:700;font-size:12.5px')}>+ Noter la réservation</button>
                   <div style={S('display:flex;flex-direction:column;gap:7px;margin-top:13px')}>

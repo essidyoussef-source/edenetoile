@@ -254,3 +254,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
     padding-right: 10px !important;
   }
 }
+
+/* Filet de sécurité : aucun champ de formulaire ne dépasse son conteneur */
+input, select, textarea { max-width: 100%; }
