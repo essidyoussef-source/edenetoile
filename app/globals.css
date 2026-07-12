@@ -245,3 +245,12 @@ html, body { max-width: 100%; overflow-x: hidden; }
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
+/* Cockpit planning : rail des heures plus étroit sur mobile (recentre la grille) */
+@media (max-width: 720px) {
+  .pw-card {
+    --gut: 34px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}

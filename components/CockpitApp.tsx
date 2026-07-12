@@ -670,10 +670,10 @@ export default function CockpitApp() {
               </div>
             </div>
 
-            <div style={S('background:#FFFFFF;border:1px solid #CBE6F6;border-radius:24px;padding:16px 16px 18px;box-shadow:0 10px 30px rgba(20,93,160,0.08);overflow-x:auto')}>
+            <div className="pw-card" style={{ ...S('background:#FFFFFF;border:1px solid #CBE6F6;border-radius:24px;padding:16px 16px 18px;box-shadow:0 10px 30px rgba(20,93,160,0.08);overflow-x:auto'), ['--gut' as string]: '54px' }}>
               <div style={{ minWidth: gridMinW }}>
                 {/* entêtes de jours */}
-                <div style={{ ...S('gap:0;margin-bottom:6px'), display: 'grid', gridTemplateColumns: `54px repeat(${weekCols},1fr)` }}>
+                <div style={{ ...S('gap:0;margin-bottom:6px'), display: 'grid', gridTemplateColumns: `var(--gut) repeat(${weekCols},1fr)` }}>
                   <div></div>
                   {weekDays.map((d) => (
                     <button key={d.dk} onClick={d.goDay} title="Ouvrir la gestion de ce jour" className="hvOp" style={S(`cursor:pointer;background:${d.headBg};color:${d.headFg};padding:9px 11px;border-radius:14px;margin:0 3px;text-align:center`)}>
@@ -683,7 +683,7 @@ export default function CockpitApp() {
                   ))}
                 </div>
                 {/* grille horaire */}
-                <div style={{ display: 'grid', gridTemplateColumns: `54px repeat(${weekCols},1fr)`, gap: 0 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: `var(--gut) repeat(${weekCols},1fr)`, gap: 0 }}>
                   <div style={{ position: 'relative', height: gridH }}>
                     {hourMarks.map((h) => (
                       <div key={h.label} style={{ ...S('position:absolute;right:8px;transform:translateY(-50%);font-size:10.5px;font-weight:700;color:#8FA9BE'), top: h.top }}>{h.label}</div>
