@@ -258,17 +258,45 @@ html, body { max-width: 100%; overflow-x: hidden; }
 /* Filet de sécurité : aucun champ de formulaire ne dépasse son conteneur */
 input, select, textarea { max-width: 100%; }
 
-/* Révélations au scroll (page d'accueil) — apparition douce des blocs */
-.reveal {
+/* ============ Révélations au scroll (apparition douce) ============ */
+/* Base commune à toutes les variantes */
+.reveal,
+.reveal-l,
+.reveal-r,
+.reveal-zoom,
+.reveal-fade,
+.reveal-item {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.in {
+/* Directions de départ */
+.reveal        { transform: translateY(30px); }        /* monte en fondu */
+.reveal-l      { transform: translateX(-42px); }        /* arrive de la gauche */
+.reveal-r      { transform: translateX(42px); }         /* arrive de la droite */
+.reveal-zoom   { transform: scale(0.92); }              /* léger zoom avant */
+.reveal-fade   { transform: translateY(10px); }         /* fondu discret (textes) */
+.reveal-item   { transform: translateY(26px); }         /* enfant d'une cascade */
+
+/* État révélé (commun) */
+.reveal.in,
+.reveal-l.in,
+.reveal-r.in,
+.reveal-zoom.in,
+.reveal-fade.in,
+.reveal-item.in {
   opacity: 1;
   transform: none;
 }
+
+/* Titres animés lettre par mot n'est pas nécessaire : on décale les lignes.
+   Cascade : les enfants .reveal-item se dévoilent l'un après l'autre.
+   Le délai est posé en JS (transition-delay) selon l'ordre dans le groupe. */
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .reveal, .reveal-l, .reveal-r, .reveal-zoom, .reveal-fade, .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

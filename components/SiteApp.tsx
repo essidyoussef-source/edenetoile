@@ -87,24 +87,35 @@ export default function SiteApp() {
     };
   }, []);
 
-  // Révélation douce des blocs au défilement (page d'accueil)
+  // Révélation douce des blocs ET des textes au défilement
   useEffect(() => {
     if (!mounted) return;
-    const els = Array.from(document.querySelectorAll('.reveal'));
+    const SEL = '.reveal,.reveal-l,.reveal-r,.reveal-zoom,.reveal-fade,.reveal-stagger';
+    // Dévoile un élément + met en cascade ses éventuels enfants .reveal-item
+    const show = (el: Element) => {
+      el.classList.add('in');
+      const kids = el.querySelectorAll(':scope > .reveal-item');
+      kids.forEach((k, i) => {
+        (k as HTMLElement).style.transitionDelay = i * 85 + 'ms';
+        k.classList.add('in');
+      });
+    };
+    const els = Array.from(document.querySelectorAll(SEL));
     if (!('IntersectionObserver' in window)) {
-      els.forEach((e) => e.classList.add('in'));
+      els.forEach(show);
+      document.querySelectorAll('.reveal-item').forEach((k) => k.classList.add('in'));
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((en) => {
           if (en.isIntersecting) {
-            en.target.classList.add('in');
+            show(en.target);
             io.unobserve(en.target);
           }
         });
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 }
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
     );
     els.forEach((e) => io.observe(e));
     return () => io.disconnect();
@@ -348,13 +359,13 @@ export default function SiteApp() {
               <img className="hero-img" src="/uploads/679452210_1893613361685086_61712237109849653_n-3.jpg" alt="L'Étoile Filante et ses passagers devant les falaises de craie" style={S('width:100%;height:clamp(500px,62vw,700px);object-fit:cover;display:block')} />
               <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0.18) 0%,rgba(11,34,57,0.10) 40%,rgba(11,34,57,0.72) 100%)')}></div>
               <div style={S('position:absolute;inset:0;display:flex;align-items:flex-end')}>
-                <div className="hero-content" style={S('max-width:1240px;margin:0 auto;width:100%;padding:0 24px clamp(120px,14vw,170px)')}>
-                  <div className="hero-eyebrow" style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Promenades en bateau · Le Tréport</div>
-                  <h1 className="hero-h1" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:18ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
+                <div className="hero-content reveal-stagger" style={S('max-width:1240px;margin:0 auto;width:100%;padding:0 24px clamp(120px,14vw,170px)')}>
+                  <div className="hero-eyebrow reveal-item" style={S('font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:#BEE3F5;margin-bottom:16px')}>Promenades en bateau · Le Tréport</div>
+                  <h1 className="hero-h1 reveal-item" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(34px,5.4vw,68px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 16px;max-width:18ch;color:#FFFFFF;text-wrap:balance;text-shadow:0 2px 30px rgba(11,34,57,0.4)")}>
                     <span style={S('background:rgba(189,232,245,0.92);color:#0B2239;padding:1px 14px;border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>Balades en mer</span> au pied des plus hautes falaises d&apos;Europe
                   </h1>
-                  <p className="hero-p" style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Embarquez pour 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise. Une sortie commentée, au rythme de la marée.</p>
-                  <div style={S('display:flex;gap:12px;flex-wrap:wrap')}>
+                  <p className="hero-p reveal-item" style={S('font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 26px;max-width:52ch')}>Embarquez pour 30 minutes ou 1 heure à bord de L&apos;Étoile Filante et de L&apos;EDEN · du Tréport à Mers-les-Bains, jusqu&apos;au Bois de Cise. Une sortie commentée, au rythme de la marée.</p>
+                  <div className="reveal-item" style={S('display:flex;gap:12px;flex-wrap:wrap')}>
                     <a href="#ardoise" className="hvPillLight" style={S('padding:14px 26px;border-radius:999px;background:#FFFFFF;color:#0B2239;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 10px 30px rgba(11,34,57,0.3)')}>Horaires du jour ↓</a>
                     <a href={`tel:${TEL_HREF}`} className="hvGlass" style={S('padding:14px 26px;border-radius:999px;background:rgba(255,255,255,0.16);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);color:#FFFFFF;font-weight:700;font-size:15px;text-decoration:none')}>Réserver · {TELEPHONE}</a>
                   </div>
@@ -412,12 +423,12 @@ export default function SiteApp() {
                 <div style={S('position:absolute;top:-140px;right:-100px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(79,179,232,0.22),rgba(79,179,232,0) 70%);pointer-events:none')}></div>
                 <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;position:relative')}>
                   <div style={S('position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,32px);align-items:stretch')}>
-                    <div className="ardoise-photo" style={S('position:relative;border-radius:22px;overflow:hidden;min-height:280px')}>
+                    <div className="ardoise-photo reveal-l" style={S('position:relative;border-radius:22px;overflow:hidden;min-height:280px')}>
                       <img src="/uploads/IMG_1313.jpg" alt="L'EDEN en balade, passagers à bord" style={S('position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;left:12px;bottom:12px;background:rgba(11,34,57,0.6);backdrop-filter:blur(8px);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:600;color:#DFF1FB')}>En mer, au large du Tréport</div>
                     </div>
 
-                    <div className="ardoise-body" style={S('display:flex;flex-direction:column')}>
+                    <div className="ardoise-body reveal-r" style={S('display:flex;flex-direction:column')}>
                       <div style={S('display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap')}>
                         <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:-0.01em;margin:0")}>L&apos;ardoise du jour</h2>
                         <div style={S('font-size:12.5px;font-weight:600;color:#9ED4F2;text-transform:capitalize')}>{todayLabel} · coef {coefToday}</div>
@@ -452,9 +463,9 @@ export default function SiteApp() {
 
                   {/* accès rapides : 4 cartes blanches en relief */}
                   <div style={S('position:relative;margin-top:clamp(18px,2.4vw,26px)')}>
-                    <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;align-items:stretch')}>
+                    <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;align-items:stretch')}>
                       {/* 1 · Tarifs */}
-                      <div style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
+                      <div className="reveal-item" style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
                         <div style={S('display:flex;align-items:center;gap:10px')}>
                           <span style={S("display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#EAF6FD;font-family:'Sora',sans-serif;font-weight:800;font-size:16px;color:#1D82C4")}>€</span>
                           <span style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:14.5px")}>Tarifs <span style={S('background:#BDE8F5;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;color:#0B2239;margin-left:4px')}>2026</span></span>
@@ -476,7 +487,7 @@ export default function SiteApp() {
                       </div>
 
                       {/* 2 · Réservation sur place */}
-                      <div style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
+                      <div className="reveal-item" style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
                         <div style={S('display:flex;align-items:center;gap:10px')}>
                           <span style={S('display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#EAF6FD')}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><rect x="3.5" y="6.5" width="17" height="11" rx="3"></rect><line x1="15" y1="7.5" x2="15" y2="9.5"></line><line x1="15" y1="11" x2="15" y2="13"></line><line x1="15" y1="14.5" x2="15" y2="16.5"></line></svg>
@@ -490,7 +501,7 @@ export default function SiteApp() {
                       </div>
 
                       {/* 3 · Modalités d'accueil */}
-                      <div style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
+                      <div className="reveal-item" style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
                         <div style={S('display:flex;align-items:center;gap:10px')}>
                           <span style={S('display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#EAF6FD')}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><path d="M12 20.5 C 7 16.5, 3.5 13, 3.5 9.2 A 4.4 4.4 0 0 1 12 7.2 A 4.4 4.4 0 0 1 20.5 9.2 C 20.5 13, 17 16.5, 12 20.5 Z"></path></svg>
@@ -515,7 +526,7 @@ export default function SiteApp() {
                       </div>
 
                       {/* 4 · Embarquement */}
-                      <div style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
+                      <div className="reveal-item" style={S('background:#FFFFFF;border-radius:22px;padding:18px 20px 16px;box-shadow:0 16px 40px rgba(4,16,28,0.35);color:#0B2239;display:flex;flex-direction:column;gap:12px')}>
                         <div style={S('display:flex;align-items:center;gap:10px')}>
                           <span style={S('display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#EAF6FD')}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D82C4" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="5.5" r="2.5"></circle><line x1="12" y1="8" x2="12" y2="19"></line><line x1="8" y1="11" x2="16" y2="11"></line><path d="M5 14.5 A 8 8 0 0 0 19 14.5"></path></svg>
@@ -554,12 +565,12 @@ export default function SiteApp() {
                 </div>
 
                 <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;position:relative')}>
-                  <div style={S('text-align:center;margin-bottom:34px')}>
-                    <div style={S("display:inline-block;background:#E9F8FF;box-shadow:0 8px 24px rgba(11,34,57,0.12);border-radius:14px;padding:10px 26px;font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(17px,1.9vw,22px);letter-spacing:0.12em;text-transform:uppercase;color:#1D82C4;margin-bottom:16px")}>Nos sorties en mer</div>
-                    <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,40px);letter-spacing:-0.02em;margin:0;color:#0B2239")}>Trois façons de <span style={S('background:#FFFFFF;border-radius:12px;padding:1px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>prendre le large</span></h2>
+                  <div className="reveal-stagger" style={S('text-align:center;margin-bottom:34px')}>
+                    <div className="reveal-item" style={S("display:inline-block;background:#E9F8FF;box-shadow:0 8px 24px rgba(11,34,57,0.12);border-radius:14px;padding:10px 26px;font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(17px,1.9vw,22px);letter-spacing:0.12em;text-transform:uppercase;color:#1D82C4;margin-bottom:16px")}>Nos sorties en mer</div>
+                    <h2 className="reveal-item" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,40px);letter-spacing:-0.02em;margin:0;color:#0B2239")}>Trois façons de <span style={S('background:#FFFFFF;border-radius:12px;padding:1px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>prendre le large</span></h2>
                   </div>
-                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
-                    <a href="#" onClick={go('balades')} style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
+                  <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
+                    <a href="#" onClick={go('balades')} className="reveal-item" style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
                       <img src="/uploads/IMG_1313.jpg" alt="Balade 30 min" style={S('width:100%;height:380px;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 40%,rgba(11,34,57,0.82) 100%)')}></div>
                       <div style={S('position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;letter-spacing:0.12em;color:#FFFFFF;background:rgba(11,34,57,0.5);backdrop-filter:blur(8px);border-radius:999px;padding:6px 13px')}>01</div>
@@ -569,7 +580,7 @@ export default function SiteApp() {
                         <div style={S('font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.85)')}>Le grand classique : falaises du Tréport et de Mers-les-Bains, commentées par le capitaine.</div>
                       </div>
                     </a>
-                    <a href="#" onClick={go('balades')} style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
+                    <a href="#" onClick={go('balades')} className="reveal-item" style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
                       <img src="/uploads/IMG_1294.jpg" alt="Balade 1 h" style={S('width:100%;height:380px;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 40%,rgba(11,34,57,0.82) 100%)')}></div>
                       <div style={S('position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;letter-spacing:0.12em;color:#FFFFFF;background:rgba(11,34,57,0.5);backdrop-filter:blur(8px);border-radius:999px;padding:6px 13px')}>02</div>
@@ -579,7 +590,7 @@ export default function SiteApp() {
                         <div style={S('font-size:13.5px;line-height:1.55;color:rgba(255,255,255,0.85)')}>La version longue, jusqu&apos;au Bois de Cise · le temps d&apos;apercevoir phoques et oiseaux marins.</div>
                       </div>
                     </a>
-                    <a href="#" onClick={go('peche')} style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
+                    <a href="#" onClick={go('peche')} className="reveal-item" style={S('position:relative;border-radius:24px;overflow:hidden;display:block;text-decoration:none;color:#FFFFFF')}>
                       <img src="/uploads/679031361_1893613261685096_5120760682960525618_n.jpg" alt="Pêche en mer · 6 h" style={S('width:100%;height:380px;object-fit:cover;display:block')} />
                       <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 40%,rgba(11,34,57,0.82) 100%)')}></div>
                       <div style={S('position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;letter-spacing:0.12em;color:#FFFFFF;background:rgba(11,34,57,0.5);backdrop-filter:blur(8px);border-radius:999px;padding:6px 13px')}>03</div>
@@ -613,11 +624,11 @@ export default function SiteApp() {
                 <Fish width={34} height={21} stroke="#1D82C4" strokeWidth={1.7} style={S('position:absolute;top:56px;right:9%;animation:ef-swim 6s ease-in-out infinite;opacity:0.55')} />
                 <Fish width={24} height={15} stroke="#FFFFFF" strokeWidth={1.9} style={S('position:absolute;bottom:60px;left:7%;transform:scaleX(-1);animation:ef-float 5s ease-in-out infinite;opacity:0.75')} />
                 <div style={S('max-width:1240px;margin:0 auto;padding:0 24px')}>
-                  <div style={S('text-align:center;margin-bottom:32px')}>
+                  <div className="reveal" style={S('text-align:center;margin-bottom:32px')}>
                     <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(24px,3vw,38px);letter-spacing:-0.02em;margin:0;color:#0B2239")}>Embarquer, c&apos;est <span style={S('background:#FFFFFF;border-radius:12px;padding:1px 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>simple comme bonjour</span></h2>
                   </div>
-                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px')}>
-                    <div style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14);position:relative')}>
+                  <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px')}>
+                    <div className="reveal-item" style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14);position:relative')}>
                       <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
                         <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:26px;color:#4FB3E8")}>1</span>
                         <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD')}>
@@ -628,7 +639,7 @@ export default function SiteApp() {
                       <div style={S('font-size:13.5px;color:#5C7893;line-height:1.6')}>Les horaires suivent la marée : ils changent chaque jour. Ici même, sur Facebook, ou sur l&apos;ardoise du quai.</div>
                       <a href="#ardoise" className="hvNavy" style={S('display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:#1D82C4')}>Voir les horaires ↑</a>
                     </div>
-                    <div style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14)')}>
+                    <div className="reveal-item" style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14)')}>
                       <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
                         <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:26px;color:#4FB3E8")}>2</span>
                         <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD')}>
@@ -639,7 +650,7 @@ export default function SiteApp() {
                       <div style={S('font-size:13.5px;color:#5C7893;line-height:1.6')}>À la billetterie, le jour même · Place de la Poissonnerie municipale. Arrivez 20 minutes avant en plein été.</div>
                       <a href={`tel:${TEL_HREF}`} className="hvNavy" style={S('display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:#1D82C4')}>Réserver par téléphone →</a>
                     </div>
-                    <div style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14)')}>
+                    <div className="reveal-item" style={S('background:#FFFFFF;border-radius:24px;padding:24px 26px;box-shadow:0 14px 36px rgba(11,34,57,0.14)')}>
                       <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
                         <span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:26px;color:#4FB3E8")}>3</span>
                         <span style={S('display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#EAF6FD')}>
@@ -669,15 +680,15 @@ export default function SiteApp() {
                 <div style={S('position:absolute;bottom:60px;left:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(79,179,232,0.14),rgba(79,179,232,0) 70%);pointer-events:none')}></div>
                 <div style={S('max-width:1240px;margin:0 auto;padding:0 24px;position:relative')}>
 
-                  <div style={S('text-align:center;max-width:60ch;margin:0 auto clamp(34px,4vw,52px)')}>
-                    <div style={S('display:inline-block;padding:8px 20px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(158,212,242,0.4);font-size:13px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#BEE3F5;margin-bottom:22px')}>Bon à savoir</div>
-                    <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);line-height:1.06;letter-spacing:-0.02em;margin:0 0 20px")}>Pourquoi réserver <span style={S('background:#BDE8F5;color:#0B2239;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>sur place</span>, le jour&nbsp;J&nbsp;?</h2>
-                    <p style={S('font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:#CFE8F7;margin:0')}>Nos bateaux dépendent de deux choses qu&apos;on ne maîtrise pas&nbsp;: la marée et la mer. Voilà pourquoi tout se décide au dernier moment, pour votre sécurité et votre plaisir.</p>
+                  <div className="reveal-stagger" style={S('text-align:center;max-width:60ch;margin:0 auto clamp(34px,4vw,52px)')}>
+                    <div className="reveal-item" style={S('display:inline-block;padding:8px 20px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(158,212,242,0.4);font-size:13px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#BEE3F5;margin-bottom:22px')}>Bon à savoir</div>
+                    <h2 className="reveal-item" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);line-height:1.06;letter-spacing:-0.02em;margin:0 0 20px")}>Pourquoi réserver <span style={S('background:#BDE8F5;color:#0B2239;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>sur place</span>, le jour&nbsp;J&nbsp;?</h2>
+                    <p className="reveal-item" style={S('font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:#CFE8F7;margin:0')}>Nos bateaux dépendent de deux choses qu&apos;on ne maîtrise pas&nbsp;: la marée et la mer. Voilà pourquoi tout se décide au dernier moment, pour votre sécurité et votre plaisir.</p>
                   </div>
 
-                  <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:26px')}>
+                  <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:26px')}>
                     {/* Raison 1 : marée */}
-                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                    <div className="reveal-item" style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
                       <div style={S('position:relative;height:190px')}>
                         <img src="/uploads/maree-basse-phare.jpg" alt="Le port du Tréport à marée basse" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
                         <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
@@ -691,7 +702,7 @@ export default function SiteApp() {
                       </div>
                     </div>
                     {/* Raison 2 : mer */}
-                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                    <div className="reveal-item" style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
                       <div style={S('position:relative;height:190px')}>
                         <img src="/uploads/tempete-jetee.jpg" alt="Mer agitée sur la jetée du Tréport" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
                         <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
@@ -705,7 +716,7 @@ export default function SiteApp() {
                       </div>
                     </div>
                     {/* Raison 3 : confirmation */}
-                    <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
+                    <div className="reveal-item" style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.32);border-radius:28px;overflow:hidden;backdrop-filter:blur(6px)')}>
                       <div style={S('position:relative;height:190px')}>
                         <img src="/uploads/518207258_1636985877347837_501752820138468060_n-780e21f1.jpg" alt="Feu d'artifice sur le port du Tréport à la tombée de la nuit" style={S('width:100%;height:100%;object-fit:cover;display:block')} />
                         <div style={S('position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,34,57,0) 45%,rgba(11,34,57,0.85) 100%)')}></div>
@@ -721,7 +732,7 @@ export default function SiteApp() {
                   </div>
 
                   {/* Pas de réservation en ligne */}
-                  <div style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.35);border-radius:28px;padding:clamp(24px,3vw,38px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:center')}>
+                  <div className="reveal" style={S('background:rgba(255,255,255,0.10);border:1px solid rgba(158,212,242,0.35);border-radius:28px;padding:clamp(24px,3vw,38px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:center')}>
                     <div>
                       <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.01em;margin-bottom:12px")}>Pourquoi pas de réservation en ligne&nbsp;?</div>
                       <p style={S('margin:0;font-size:16px;line-height:1.65;color:#CFE8F7')}>Réserver des semaines à l&apos;avance nous obligerait à annuler dès que la marée ou la météo tourne — frustrant pour tout le monde. Chez nous, <strong style={S('color:#FFFFFF')}>aucun risque, aucune déception</strong> : les billets s&apos;achètent sur le quai le jour même.</p>
@@ -743,21 +754,21 @@ export default function SiteApp() {
 
             {/* PANORAMA */}
             <section style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px 0')}>
-              <div className="reveal" style={S('position:relative;border-radius:28px;overflow:hidden')}>
+              <div className="reveal-zoom" style={S('position:relative;border-radius:28px;overflow:hidden')}>
                 <img src="/uploads/IMG_1320.jpg" alt="Mers-les-Bains et ses villas Belle Époque, depuis la mer" style={S('width:100%;height:clamp(280px,38vw,460px);object-fit:cover;display:block')} />
                 <div style={S('position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:999px;padding:9px 20px;font-size:13px;font-weight:600;color:#0B2239')}>Mers-les-Bains et ses villas Belle Époque · vues du large</div>
               </div>
             </section>
 
             {/* FACEBOOK + ACCÈS */}
-            <section className="reveal" style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px clamp(64px,9vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px')}>
-              <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px')}>
+            <section className="reveal-stagger" style={S('max-width:1240px;margin:0 auto;padding:clamp(64px,9vw,120px) 24px clamp(64px,9vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px')}>
+              <div className="reveal-item" style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px')}>
                 <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4')}>Actualités</div>
                 <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:23px;letter-spacing:-0.01em")}>Suivez la mer au jour le jour</div>
                 <p style={S('margin:0;font-size:14.5px;line-height:1.65;color:#5C7893;flex:1')}>Annulations météo de dernière minute, photos des sorties, actualités du port : tout se passe sur notre page Facebook, mise à jour par le capitaine.</p>
                 <a href="https://www.facebook.com/EtoileFilante76/" target="_blank" rel="noopener" className="hvBlueBg" style={S('align-self:flex-start;padding:13px 24px;border-radius:999px;background:#0B2239;color:#FFFFFF;font-weight:700;font-size:14px;text-decoration:none')}>Ouvrir la page Facebook ↗</a>
               </div>
-              <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:28px;overflow:hidden;display:flex;flex-direction:column')}>
+              <div className="reveal-item" style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:28px;overflow:hidden;display:flex;flex-direction:column')}>
                 <iframe title="Plan d'accès au quai François 1er" src="https://www.openstreetmap.org/export/embed.html?bbox=1.3579%2C50.0545%2C1.3865%2C50.0695&layer=mapnik&marker=50.0620715%2C1.37143055" style={S('border:0;width:100%;flex:1;min-height:230px')}></iframe>
                 <div style={S('padding:18px 24px;font-size:14px;line-height:1.6;color:#5C7893')}><strong style={S('color:#0B2239')}>Embarquement :</strong> Quai François 1ᵉʳ, 76470 Le Tréport · billetterie sur le quai, face aux bateaux.</div>
               </div>
@@ -768,13 +779,13 @@ export default function SiteApp() {
         {/* ======================== BALADES EN MER ======================== */}
         {page === 'balades' && (
           <div style={S('max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('max-width:720px;margin-bottom:48px')}>
+            <div className="reveal" style={S('max-width:720px;margin-bottom:48px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Balades en mer</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0 0 16px")}>30 minutes ou 1 heure, <span style={S('background:#BDE8F5;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>au pied des falaises</span></h1>
               <p style={S('font-size:16.5px;line-height:1.7;color:#5C7893;margin:0')}>Toutes nos balades partent du quai François 1ᵉʳ et sont commentées par le capitaine : anecdotes sur la faune, la flore et l&apos;histoire de la côte d&apos;albâtre. Un départ toutes les 30 minutes · L&apos;Étoile Filante et L&apos;EDEN se relaient à quai.</p>
             </div>
 
-            <div style={S('display:flex;flex-direction:column;gap:56px')}>
+            <div className="reveal" style={S('display:flex;flex-direction:column;gap:56px')}>
               <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px;align-items:center')}>
                 <img src="/uploads/IMG_1313.jpg" alt="Balade en mer · 30 minutes" style={S('width:100%;height:clamp(260px,30vw,400px);object-fit:cover;display:block;border-radius:26px')} />
                 <div style={S('display:flex;flex-direction:column;gap:14px')}>
@@ -811,15 +822,15 @@ export default function SiteApp() {
               </div>
             </div>
 
-            <div style={S('margin-top:72px;padding-top:48px;border-top:1px solid #E4EFF7')}>
+            <div className="reveal" style={S('margin-top:72px;padding-top:48px;border-top:1px solid #E4EFF7')}>
               <h2 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(24px,3vw,36px);letter-spacing:-0.02em;margin:0 0 28px")}>Les bateaux &amp; l&apos;équipage</h2>
-              <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px')}>
+              <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px')}>
                 {([
                   ["L'EDEN", WIX('3fd16e_64ce061d147443df8c68886b5abb354a~mv2.jpg'), "Jusqu'à 90 passagers. Le grand frère, spacieux et stable, idéal pour les groupes."],
                   ["L'Étoile Filante", '/uploads/IMG_1296.jpg', "Jusqu'à 70 passagers. Le bateau historique qui a donné son nom à la maison."],
                   ['Gautier, votre capitaine', WIX('3fd16e_feb6a7796b1840ae956e2296f1fb130c~mv2.jpg'), 'Marin du Tréport, il commente chaque sortie et décide chaque veille des départs selon la météo.'],
                 ] as [string, string, string][]).map(([title, img, desc]) => (
-                  <div key={title} style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:24px;overflow:hidden')}>
+                  <div key={title} className="reveal-item" style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:24px;overflow:hidden')}>
                     <img src={img} alt={title} style={S('width:100%;height:200px;object-fit:cover;display:block')} />
                     <div style={S('padding:18px 22px 20px')}>
                       <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:17px")}>{title}</div>
@@ -835,13 +846,13 @@ export default function SiteApp() {
         {/* ========================= PÊCHE EN MER ========================= */}
         {page === 'peche' && (
           <div style={S('max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('max-width:720px;margin-bottom:48px')}>
+            <div className="reveal" style={S('max-width:720px;margin-bottom:48px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Pêche en mer</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0 0 16px")}>6 heures au large, <span style={S('background:#BDE8F5;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>poisson garanti</span></h1>
               <p style={S('font-size:16.5px;line-height:1.7;color:#5C7893;margin:0')}>Constituez votre groupe de pêcheurs · <strong style={S('color:#0B2239')}>7 personnes minimum</strong> · et partez 6 heures au large avec le capitaine, le plus souvent à bord de L&apos;Étoile Filante. Prévoyez bottes et glacière : vous repartez avec vos poissons !</p>
             </div>
 
-            <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px;align-items:start')}>
+            <div className="reveal" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px;align-items:start')}>
               <div style={S('display:flex;flex-direction:column;gap:18px')}>
                 <img src="/uploads/679031361_1893613261685096_5120760682960525618_n.jpg" alt="L'Étoile Filante au large, un chalutier à l'horizon" style={S('width:100%;height:clamp(240px,26vw,340px);object-fit:cover;display:block;border-radius:26px')} />
                 <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
@@ -888,29 +899,29 @@ export default function SiteApp() {
         {/* ================== ÉVÉNEMENTS & PRIVATISATION ================== */}
         {page === 'evenements' && (
           <div style={S('max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('max-width:720px;margin-bottom:48px')}>
+            <div className="reveal" style={S('max-width:720px;margin-bottom:48px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Événements &amp; privatisation</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0 0 16px")}>Un bateau <span style={S('background:#BDE8F5;border-radius:12px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone')}>rien que pour vous</span></h1>
               <p style={S('font-size:16.5px;line-height:1.7;color:#5C7893;margin:0')}>Vin d&apos;honneur, enterrement de vie de célibataire, dispersion de cendres en mer, sorties scolaires et groupes : privatisez L&apos;Étoile Filante ou L&apos;EDEN, avec le commentaire du capitaine si vous le souhaitez.</p>
             </div>
 
-            <div style={S('position:relative;border-radius:28px;overflow:hidden;margin-bottom:34px')}>
+            <div className="reveal-zoom" style={S('position:relative;border-radius:28px;overflow:hidden;margin-bottom:34px')}>
               <img src="/uploads/518207258_1636985877347837_501752820138468060_n.jpg" alt="Feu d'artifice sur le port du Tréport" style={S('width:100%;height:clamp(280px,38vw,440px);object-fit:cover;display:block')} />
               <div style={S('position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:999px;padding:9px 20px;font-size:13px;font-weight:600;color:#0B2239')}>Les soirs d&apos;événement, le port devient un spectacle</div>
             </div>
 
-            <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px')}>
-              <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
+            <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px')}>
+              <div className="reveal-item" style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
                 <div style={S('font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#1D82C4')}>Privatisation</div>
                 <div style={S('display:flex;align-items:baseline;gap:8px')}><span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:34px;color:#0B2239")}>300 €</span><span style={S('font-size:13px;color:#5C7893')}>· 30 minutes</span></div>
                 <div style={S('font-size:13.5px;color:#5C7893;line-height:1.6')}>Le tour classique des falaises, rien que pour votre groupe.</div>
               </div>
-              <div style={S('background:#0B2239;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;color:#FFFFFF;box-shadow:0 14px 38px rgba(11,34,57,0.28)')}>
+              <div className="reveal-item" style={S('background:#0B2239;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;color:#FFFFFF;box-shadow:0 14px 38px rgba(11,34,57,0.28)')}>
                 <div style={S('font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#9ED4F2')}>Privatisation</div>
                 <div style={S('display:flex;align-items:baseline;gap:8px')}><span style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:34px")}>600 €</span><span style={S('font-size:13px;color:#BEE3F5')}>· 1 heure</span></div>
                 <div style={S('font-size:13.5px;color:#BEE3F5;line-height:1.6')}>Jusqu&apos;au Bois de Cise · le format idéal pour un vin d&apos;honneur au large.</div>
               </div>
-              <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
+              <div className="reveal-item" style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(20,93,160,0.08)')}>
                 <div style={S('font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#1D82C4')}>Groupes &amp; scolaires</div>
                 <div style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:#0B2239")}>Sur devis</div>
                 <div style={S('font-size:13.5px;color:#5C7893;line-height:1.6')}>Écoles, centres de loisirs, établissements : jusqu&apos;à 90 passagers sur L&apos;EDEN, créneau réservé au planning.</div>
@@ -929,15 +940,15 @@ export default function SiteApp() {
         {/* ============================ TARIFS ============================ */}
         {page === 'tarifs' && (
           <div style={S('max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('max-width:720px;margin-bottom:44px')}>
+            <div className="reveal" style={S('max-width:720px;margin-bottom:44px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Tarifs</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0 0 16px")}>Des prix simples, comme au quai</h1>
               <p style={S('font-size:16.5px;line-height:1.7;color:#5C7893;margin:0')}>Billets en vente à la billetterie du quai, le jour même. Réservation conseillée par téléphone au <a href={`tel:${TEL_HREF}`} style={S('font-weight:700')}>{TELEPHONE}</a>.</p>
             </div>
 
-            <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
+            <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px')}>
               {tarifCards.map((t) => (
-                <div key={t.title} style={S(`background:${t.bg};color:${t.fg};border:1px solid ${t.border};border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:16px`)}>
+                <div key={t.title} className="reveal-item" style={S(`background:${t.bg};color:${t.fg};border:1px solid ${t.border};border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:16px`)}>
                   <div>
                     <div style={S("font-family:'Sora',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.01em")}>{t.title}</div>
                     <div style={S('font-size:13px;margin-top:4px;opacity:0.7')}>{t.sub}</div>
@@ -955,7 +966,7 @@ export default function SiteApp() {
               ))}
             </div>
 
-            <div style={S('margin-top:24px;background:#F2F9FE;border:1px solid #DCEDF8;border-radius:999px;padding:15px 26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center')}>
+            <div className="reveal" style={S('margin-top:24px;background:#F2F9FE;border:1px solid #DCEDF8;border-radius:999px;padding:15px 26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center')}>
               <div style={S('font-weight:700;font-size:13.5px;color:#0B2239')}>Moyens de paiement :</div>
               {paiements.map((p) => (
                 <div key={p} style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;color:#5C7893')}>{p}</div>
@@ -967,7 +978,7 @@ export default function SiteApp() {
         {/* ======================== INFOS PRATIQUES ======================= */}
         {page === 'infos' && (
           <div style={S('max-width:900px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('margin-bottom:40px')}>
+            <div className="reveal" style={S('margin-bottom:40px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Infos pratiques</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0")}>Avant d&apos;embarquer</h1>
             </div>
@@ -990,12 +1001,12 @@ export default function SiteApp() {
         {/* =========================== CONTACT ============================ */}
         {page === 'contact' && (
           <div style={S('max-width:1240px;margin:0 auto;padding:clamp(44px,6vw,72px) 24px clamp(64px,9vw,110px)')}>
-            <div style={S('max-width:720px;margin-bottom:44px')}>
+            <div className="reveal" style={S('max-width:720px;margin-bottom:44px')}>
               <div style={S('font-size:12px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:#1D82C4;margin-bottom:14px')}>Contact</div>
               <h1 style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,4.6vw,56px);letter-spacing:-0.02em;line-height:1.05;margin:0")}>Réservez en un coup de fil</h1>
             </div>
-            <div style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:stretch')}>
-              <div style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:28px;padding:36px;display:flex;flex-direction:column;gap:18px')}>
+            <div className="reveal-stagger" style={S('display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:stretch')}>
+              <div className="reveal-item" style={S('background:#F2F9FE;border:1px solid #DCEDF8;border-radius:28px;padding:36px;display:flex;flex-direction:column;gap:18px')}>
                 <div style={S('font-size:11.5px;letter-spacing:0.22em;text-transform:uppercase;color:#1D82C4;font-weight:700')}>Réservation par téléphone</div>
                 <a href={`tel:${TEL_HREF}`} className="hvBlue" style={S("font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,42px);letter-spacing:-0.02em;color:#0B2239;text-decoration:none")}>{TELEPHONE}</a>
                 <div style={S('font-size:14.5px;line-height:1.65;color:#5C7893')}>Gautier Ricque, capitaine.<br />Réponse rapide en saison · sinon, laissez un message.</div>
@@ -1007,7 +1018,7 @@ export default function SiteApp() {
                 </div>
                 <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:18px;padding:15px 18px;font-size:13px;line-height:1.6;color:#5C7893')}>Pas de réservation en ligne : un coup de fil suffit, et la billetterie du quai vend les billets le jour même.</div>
               </div>
-              <div style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:28px;overflow:hidden;display:flex;flex-direction:column')}>
+              <div className="reveal-item" style={S('background:#FFFFFF;border:1px solid #DCEDF8;border-radius:28px;overflow:hidden;display:flex;flex-direction:column')}>
                 <iframe title="Plan d'accès" src="https://www.openstreetmap.org/export/embed.html?bbox=1.3535%2C50.0525%2C1.3905%2C50.0715&layer=mapnik&marker=50.0620715%2C1.37143055" style={S('border:0;width:100%;flex:1;min-height:320px')}></iframe>
                 <div style={S('padding:18px 24px;font-size:14px;line-height:1.65;color:#5C7893')}>Parkings : quai Sud et esplanade de la plage (5 min à pied). Le funiculaire gratuit relie la ville haute au port.</div>
               </div>
