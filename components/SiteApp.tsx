@@ -290,16 +290,8 @@ export default function SiteApp() {
             </>
           )}
           {!isDesktop && (
-            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;padding:8px 4px;background:transparent;color:#FFFFFF')}>
-              <svg width="38" height="28" viewBox="0 0 132 96" fill="none" stroke="#FFFFFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
-                {/* 3 crêtes qui déferlent */}
-                <path d="M2 60 C 10 34, 22 20, 36 22 C 52 24, 52 46, 38 47 C 29 47, 29 36, 37 35"></path>
-                <path d="M40 60 C 48 34, 60 20, 74 22 C 90 24, 90 46, 76 47 C 67 47, 67 36, 75 35"></path>
-                <path d="M78 60 C 86 34, 98 20, 112 22 C 128 24, 128 46, 114 47 C 105 47, 105 36, 113 35"></path>
-                {/* 2 lignes ondulées */}
-                <path d="M4 74 Q 20 62 36 74 T 68 74 T 100 74 T 130 74"></path>
-                <path d="M4 88 Q 20 76 36 88 T 68 88 T 100 88 T 130 88"></path>
-              </svg>
+            <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Ouvrir le menu" style={S('cursor:pointer;margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;padding:10px 4px;background:transparent')}>
+              <img src="/uploads/menu.png" alt="" style={S('width:44px;height:auto;display:block')} />
             </button>
           )}
         </div>
