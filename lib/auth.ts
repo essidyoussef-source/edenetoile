@@ -4,6 +4,13 @@
    fonctionne sans configuration. Le cookie stocke un hachage salé, jamais
    le mot de passe lui-même. */
 
+/* ⚠️ INTERRUPTEUR D'ACCÈS ⚠️
+   true  = site + cockpit PUBLICS (aucun mot de passe demandé).
+   false = site + cockpit protégés par mot de passe.
+   Pour re-protéger le site : repasser cette valeur à false, puis redéployer
+   (commit + push sur main). Rien d'autre à toucher. */
+export const ACCESS_OPEN = true;
+
 const SALT = 'etoile-filante-treport-2026';
 const DEFAULT_PASSWORD = 'moussaillon76';
 
